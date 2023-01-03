@@ -30,10 +30,38 @@ function Main() {
 
   const Card = styled.li`
     margin: 20px 10px;
+    padding: 20px;
+    font-size: 21px;
     color: red;
     border: 1px solid #333;
   `;
 
+  const Subject = styled.h2`
+    display; block;
+    padding: 5px 0;
+    line-height: 1.5;
+  `;
+
+  const ButtonWrap = styled.div`
+    display: block;
+    height: 100%;
+    text-align: right;
+    background-color: yellow;
+  `;
+
+  const Modify = styled.button`
+    all: unset;
+    padding: 5px 10px;
+    color: #111;
+    cursor: pointer;
+  `;
+
+  const Delete = styled.button`
+    all: unset;
+    padding: 5px 10px;
+    color: #111;
+    cursor: pointer;
+  `;
   return (
     <Wrap>
       <Section>
@@ -41,7 +69,11 @@ function Main() {
         <List>
           {DEFAULT_DATA.map((data) => (
             <Card key={data.id}>
-              {data.id}, {data.subject}
+              <Subject>{data.subject}</Subject>
+              <ButtonWrap>
+                <Modify type="button">수정</Modify>
+                <Delete type="button">삭제</Delete>
+              </ButtonWrap>
             </Card>
           ))}
         </List>
