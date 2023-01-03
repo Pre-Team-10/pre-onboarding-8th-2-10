@@ -1,6 +1,4 @@
-import React from 'react';
-
-const test = { test: 1 };
+import React from "react";
 
 function App() {
 	return <div className="App">App</div>;
