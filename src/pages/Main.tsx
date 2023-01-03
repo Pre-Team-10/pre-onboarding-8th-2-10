@@ -67,13 +67,13 @@ function Main() {
 
   return (
     <Wrap>
-      {DEFAULT_DATA.map(({ listid }) => (
-        <Section key={listid}>
-          <Title>To Do</Title>
+      {DEFAULT_DATA.map(({ list_id, list_title, card_contents }) => (
+        <Section key={list_id}>
+          <Title>{list_title}</Title>
           <List>
-            {DEFAULT_DATA.map(() => (
-              <Card key={listid}>
-                <Subject>제목</Subject>
+            {card_contents.map(({ id, subject }) => (
+              <Card key={id}>
+                <Subject>{subject}</Subject>
                 <ButtonWrap>
                   <ModifyBtn type="button">수정</ModifyBtn>
                   <DeleteBtn type="button">삭제</DeleteBtn>
