@@ -49,55 +49,44 @@ function Main() {
     background-color: yellow;
   `;
 
-  const Modify = styled.button`
+  const ModifyBtn = styled.button`
     all: unset;
     padding: 5px 10px;
+    font-size: 19px;
     color: #111;
     cursor: pointer;
   `;
 
-  const Delete = styled.button`
+  const DeleteBtn = styled.button`
     all: unset;
     padding: 5px 10px;
+    font-size: 19px;
     color: #111;
     cursor: pointer;
   `;
+
   return (
     <Wrap>
-      <Section>
-        <Title>To Do</Title>
-        <List>
-          {DEFAULT_DATA.map((data) => (
-            <Card key={data.id}>
-              <Subject>{data.subject}</Subject>
-              <ButtonWrap>
-                <Modify type="button">수정</Modify>
-                <Delete type="button">삭제</Delete>
-              </ButtonWrap>
-            </Card>
-          ))}
-        </List>
-      </Section>
-      <Section>
-        <Title>Doing</Title>
-        <List>
-          {DEFAULT_DATA.map((data) => (
-            <Card key={data.id}>
-              {data.id}, {data.subject}
-            </Card>
-          ))}
-        </List>
-      </Section>
-      <Section>
-        <Title>Done</Title>
-        <List>
-          {DEFAULT_DATA.map((data) => (
-            <Card key={data.id}>
-              {data.id}, {data.subject}
-            </Card>
-          ))}
-        </List>
-      </Section>
+      {DEFAULT_DATA.map(({ listid }) => (
+        <Section key={listid}>
+          <Title>To Do</Title>
+          <List>
+            {DEFAULT_DATA.map(() => (
+              <Card key={listid}>
+                <Subject>제목</Subject>
+                <ButtonWrap>
+                  <ModifyBtn type="button">수정</ModifyBtn>
+                  <DeleteBtn type="button">삭제</DeleteBtn>
+                </ButtonWrap>
+              </Card>
+            ))}
+            <div>
+              <input type="text" placeholder="제목을 입력하세요" />
+              <button type="button">추가</button>
+            </div>
+          </List>
+        </Section>
+      ))}
     </Wrap>
   );
 }
