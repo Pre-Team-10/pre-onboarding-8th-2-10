@@ -21,6 +21,7 @@
   "rules": {
     "prettier/prettier": "error",
     "no-var": "error",
-    "multiline-ternary": "error"
+    "multiline-ternary": "error",
+    "no-param-reassign": "off"
   }
 }
