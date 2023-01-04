@@ -16,29 +16,7 @@ const DEFAULT_DATA: DefaultData[] = [
   {
     list_id: 1,
     list_title: "To Do",
-    card_contents: [
-      {
-        id: 1,
-        username: "janghyun1",
-        subject: "First Title",
-        content: "hi, my name i janghyun1.",
-        order_number: 1,
-      },
-      {
-        id: 2,
-        username: "janghyun2",
-        subject: "Second Title",
-        content: "hi, my name i janghyun2.",
-        order_number: 2,
-      },
-      {
-        id: 3,
-        username: "janghyun3",
-        subject: "Third Title",
-        content: "hi, my name i janghyun3.",
-        order_number: 3,
-      },
-    ],
+    card_contents: [],
   },
   {
     list_id: 2,
