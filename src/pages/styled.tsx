@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { FaBookOpen, FaPlusCircle } from "react-icons/fa";
 
 interface MyModal {
   modal: boolean;
@@ -17,7 +18,6 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-evenly;
   margin: 0 auto;
-  margin-top: 5%;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.1);
 `;
@@ -40,18 +40,12 @@ const Item = styled.p`
   cursor: move;
   width: 300px;
   padding: 15px;
+  display: flex;
+  justify-content: space-between;
   margin: 0 auto;
   margin-bottom: 20px;
   background-color: white;
   border-radius: 5px;
-`;
-const AddBtn = styled.button`
-  cursor: pointer;
-  background-color: rgb(251, 241, 241);
-  font-size: 17px;
-  padding: 15px;
-  margin-left: 10px;
-  border: none;
 `;
 
 const BackModal = styled.p<MyModal>`
@@ -65,12 +59,66 @@ const BackModal = styled.p<MyModal>`
 const WhiteModal = styled.div`
   background-color: white;
   width: 400px;
-  height: 500px;
+  height: 520px;
   margin: 0 auto;
   margin-top: 7%;
   text-align: center;
   display: flex;
   flex-direction: column;
 `;
+const InputBox = styled.div`
+  display: flex;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 6%;
+  p {
+    width: 60px;
+  }
+  input {
+    width: 70%;
+    padding: 7px;
+    margin: 0 auto;
+  }
+  textarea {
+    width: 70%;
+    height: 200px;
+    margin: 0 auto;
+    resize: none;
+  }
+  select {
+    width: 70%;
+    margin: 0 auto;
+  }
 
-export { Container, Wrapper, ItemBox, Item, AddBtn, BackModal, WhiteModal };
+  button {
+    width: 40%;
+    margin: 0 auto;
+  }
+`;
+
+const BookIcon = styled(FaBookOpen)`
+  font-size: 20px;
+  color: #312e2e;
+  cursor: pointer;
+`;
+const PlusIcon = styled(FaPlusCircle)`
+  font-size: 40px;
+  color: #312e2e;
+  margin: 0 auto;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  display: block;
+  cursor: pointer;
+`;
+
+export {
+  Container,
+  Wrapper,
+  ItemBox,
+  Item,
+  BackModal,
+  WhiteModal,
+  InputBox,
+  BookIcon,
+  PlusIcon,
+};

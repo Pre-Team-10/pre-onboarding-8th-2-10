@@ -1,33 +1,41 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState: Array<InterfaceIssue> = [];
-
-export const counterSlice = createSlice({
-  name: "kanban",
+const initialState: Issue = {
+  issue: [],
+};
+export const issueInformation = createSlice({
+  name: "issueInformation",
   initialState,
   reducers: {
-    foo: (kanbans) => {
-      console.log(kanbans);
+    addIssue: (state, action) => {
+      state.issue.push(action.payload);
     },
   },
 });
 
-/* 임시로 reducers 함수에 foo 작성. 여기에 전역 상태 다루는 함수 작성하시면 됩니다. */
+export const { addIssue } = issueInformation.actions;
 
-export const { foo } = counterSlice.actions;
+export default issueInformation.reducer;
 
-export default counterSlice.reducer;
+type Issue = {
+  issue: InterfaceIssue[];
+};
 
 interface InterfaceIssue {
   id: number;
+  title: string;
   content: string;
   due: string;
-  state: IssueState;
+  state: string;
   manager: string;
 }
 
-enum IssueState {
-  todo = "todo",
-  doing = "doing",
-  done = "done",
-}
+// enum IssueState {
+//   todo = "todo",
+//   doing = "doing",
+//   done = "done",
+// }
