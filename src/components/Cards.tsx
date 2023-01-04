@@ -1,8 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import Details from "./Details";
+// import type { ModalType } from "../pages/Main";
 
 interface Iprops {
   subject: string;
+  // modal: ModalType[];
 }
 
 function Cards({ subject }: Iprops) {
@@ -28,6 +31,14 @@ function Cards({ subject }: Iprops) {
     text-align: right;
   `;
 
+  const DetailBtn = styled.button`
+    all: unset;
+    padding: 5px 10px;
+    font-size: 19px;
+    color: #111;
+    cursor: pointer;
+  `;
+
   const ModifyBtn = styled.button`
     all: unset;
     padding: 5px 10px;
@@ -45,13 +56,18 @@ function Cards({ subject }: Iprops) {
   `;
 
   return (
-    <Card>
-      <Subject>{subject}</Subject>
-      <ButtonWrap>
-        <ModifyBtn type="button">수정</ModifyBtn>
-        <DeleteBtn type="button">삭제</DeleteBtn>
-      </ButtonWrap>
-    </Card>
+    <>
+      <Card>
+        <Subject>{subject}</Subject>
+        <ButtonWrap>
+          <DetailBtn type="button">확인</DetailBtn>
+          <ModifyBtn type="button">수정</ModifyBtn>
+          <DeleteBtn type="button">삭제</DeleteBtn>
+        </ButtonWrap>
+      </Card>
+
+      <Details />
+    </>
   );
 }
 

@@ -9,6 +9,8 @@ interface CardContents {
   username: string;
   subject: string;
   content: string;
+  date: string;
+  state: string;
   order_number: number;
 }
 
@@ -16,7 +18,35 @@ const DEFAULT_DATA: DefaultData[] = [
   {
     list_id: 1,
     list_title: "To Do",
-    card_contents: [],
+    card_contents: [
+      {
+        id: 1,
+        username: "janghyun1",
+        subject: "First Title",
+        content: "hi, my name i janghyun1.",
+        date: "20230101",
+        state: "done",
+        order_number: 1,
+      },
+      {
+        id: 2,
+        username: "janghyun2",
+        subject: "Second Title",
+        content: "hi, my name i janghyun2.",
+        date: "20230101",
+        state: "done",
+        order_number: 2,
+      },
+      {
+        id: 3,
+        username: "janghyun3",
+        subject: "Third Title",
+        content: "hi, my name i janghyun3.",
+        date: "20230101",
+        state: "done",
+        order_number: 3,
+      },
+    ],
   },
   {
     list_id: 2,
@@ -27,6 +57,8 @@ const DEFAULT_DATA: DefaultData[] = [
         username: "janghyun4",
         subject: "First Title",
         content: "hi, my name i janghyun4.",
+        date: "20230101",
+        state: "done",
         order_number: 1,
       },
       {
@@ -34,6 +66,8 @@ const DEFAULT_DATA: DefaultData[] = [
         username: "janghyun5",
         subject: "Second Title",
         content: "hi, my name i janghyun5.",
+        date: "20230101",
+        state: "done",
         order_number: 2,
       },
       {
@@ -41,6 +75,8 @@ const DEFAULT_DATA: DefaultData[] = [
         username: "janghyun6",
         subject: "Third Title",
         content: "hi, my name i janghyun6.",
+        date: "20230101",
+        state: "done",
         order_number: 3,
       },
     ],
@@ -54,6 +90,8 @@ const DEFAULT_DATA: DefaultData[] = [
         username: "janghyun7",
         subject: "First Title",
         content: "hi, my name i janghyun7.",
+        date: "20230101",
+        state: "done",
         order_number: 1,
       },
       {
@@ -61,6 +99,8 @@ const DEFAULT_DATA: DefaultData[] = [
         username: "janghyun8",
         subject: "Second Title",
         content: "hi, my name i janghyun8.",
+        date: "20230101",
+        state: "done",
         order_number: 2,
       },
       {
@@ -68,6 +108,8 @@ const DEFAULT_DATA: DefaultData[] = [
         username: "janghyun9",
         subject: "Third Title",
         content: "hi, my name i janghyun9.",
+        date: "20230101",
+        state: "done",
         order_number: 3,
       },
     ],

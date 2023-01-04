@@ -22,6 +22,10 @@
     "prettier/prettier": "error",
     "no-var": "error",
     "multiline-ternary": "error",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "prefer-default-export ": "off",
+    "@typescript-eslint/no-unsafe-assignment": "error",
+    "@typescript-eslint/no-unsafe-member-access": "error",
+    "@typescript-eslint/no-unsafe-call": "error"
   }
 }
