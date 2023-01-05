@@ -2,7 +2,9 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   width: 1600px;
-  margin: 30px auto;
+  margin: 0px auto;
+  padding: 20px 0;
+  background: linear-gradient(45deg, blue, pink);
 `;
 
 export const SaveIssues = styled.form`
@@ -10,6 +12,7 @@ export const SaveIssues = styled.form`
   margin: 0px auto;
   padding: 20px 30px 30px;
   background-color: aliceblue;
+  border-radius: 3px;
 `;
 
 export const Title = styled.h4`
@@ -61,58 +64,12 @@ export const BtnWrap = styled.div`
 
 export const SaveBtn = styled.button`
   all: unset;
-  padding: 5px 10px;
+  padding: 10px 15px;
   font-size: 19px;
   font-weight: 500;
   color: #111;
   border: 1px solid #ddd;
   border-radius: 3px;
-  background-color: #bfbfbf;
-  cursor: pointer;
-`;
-
-export const Card = styled.li`
-  margin: 20px 0px;
-  padding: 20px;
-  font-size: 21px;
-  color: #111;
-  background-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 5px 5px 15px 3px rgba(150, 150, 150, 0.6);
-  border-radius: 12px;
-`;
-
-export const Subject = styled.h3`
-display; block;
-padding: 5px 0;
-font-size: 31px;
-line-height: 1.5;
-`;
-
-// export const ButtonWrap = styled.div`
-//   height: 100%;
-//   text-align: right;
-// `;
-
-export const DetailBtn = styled.button`
-  all: unset;
-  padding: 5px 10px;
-  font-size: 19px;
-  color: #111;
-  cursor: pointer;
-`;
-
-export const ModifyBtn = styled.button`
-  all: unset;
-  padding: 5px 10px;
-  font-size: 19px;
-  color: #111;
-  cursor: pointer;
-`;
-
-export const DeleteBtn = styled.button`
-  all: unset;
-  padding: 5px 10px;
-  font-size: 19px;
-  color: #111;
+  background-color: #e9e9e9;
   cursor: pointer;
 `;

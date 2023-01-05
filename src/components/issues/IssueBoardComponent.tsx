@@ -1,9 +1,10 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { deleteIssue } from "../../app/kanbanSlice";
-import { IssueBoard, KanbanHeader } from "../../styles/styles";
+// import { IssueBoard, KanbanHeader } from "../../styles/styles";
 import { InterfaceIssue, IssueStateEnum } from "../../utils/types";
 import IssueComponent from "./IssueComponent";
+import * as S from "./styled-issues";
 
 function IssueBoardComponent({
   issueArray,
@@ -32,8 +33,8 @@ function IssueBoardComponent({
     [pickTargetIssue, issueArray],
   );
   return (
-    <IssueBoard>
-      <KanbanHeader>{issueState}</KanbanHeader>
+    <S.IssueBoard>
+      <S.KanbanHeader>{issueState}</S.KanbanHeader>
       {issueArray.map((issue) => (
         <IssueComponent
           key={issue.id}
@@ -42,7 +43,7 @@ function IssueBoardComponent({
           handleOnModifyButtonClick={handleOnModifyButtonClick}
         />
       ))}
-    </IssueBoard>
+    </S.IssueBoard>
   );
 }
 

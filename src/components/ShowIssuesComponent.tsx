@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { defineIssueLists } from "../app/kanbanSlice";
-import { IssueKanban, ModalBackground } from "../styles/styles";
+// import { IssueKanban, ModalBackground } from "../styles/styles";
 import { getIssuesInLocalStorage } from "../utils/storage";
 import {
   InterfaceIssue,
@@ -12,6 +12,7 @@ import {
 } from "../utils/types";
 import IssueBoardComponent from "./issues/IssueBoardComponent";
 import ModalComponent from "./modal/ModalComponent";
+import * as S from "./styled-showIssues";
 
 let targetIssue: InterfaceIssue | undefined;
 
@@ -45,7 +46,7 @@ function ShowIssuesComponent() {
   return (
     <>
       {!isFetchingIssues ? (
-        <IssueKanban>
+        <S.IssueKanban>
           {Object.keys(issues).map((issueState) => {
             const state = issueState as IssueStateEnum;
             return (
@@ -57,14 +58,14 @@ function ShowIssuesComponent() {
               />
             );
           })}
-        </IssueKanban>
+        </S.IssueKanban>
       ) : (
         <div>fetching issues...</div>
       )}
       {targetIssue && targetIssueId !== -1 && (
-        <ModalBackground onClick={hideModal}>
+        <S.ModalBackground onClick={hideModal}>
           <ModalComponent targetIssue={targetIssue} hideModal={hideModal} />
-        </ModalBackground>
+        </S.ModalBackground>
       )}
     </>
   );
