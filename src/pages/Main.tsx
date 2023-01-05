@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import DEFAULT_DATA from "../utils/defaultdata";
 import Cards from "../components/Cards";
-// import Detail from "../components/Details";
 
 const Container = styled.div`
   width: 100%;

@@ -1,17 +1,18 @@
 import React from "react";
 import styled from "styled-components";
+import type { Iprops } from "../pages/Main";
 
-function Detail() {
-  const DetailWrap = styled.section`
-    display: none;
+function Details({ modalOpen }: Iprops) {
+  const Detail = styled.section`
     width: 500px;
   `;
 
+  console.log(modalOpen);
+
   return (
-    <DetailWrap>
+    <Detail>
       <div>
         <h3>타이틀</h3>
-
         <div>
           <input type="text" placeholder="" />
         </div>
@@ -32,8 +33,8 @@ function Detail() {
           <input type="checkbox" />
         </div>
       </div>
-    </DetailWrap>
+    </Detail>
   );
 }
 
-export default Detail;
+export default Details;
