@@ -5,6 +5,8 @@ import { addIssue, modifyIssue } from "../app/kanbanSlice";
 import MANAGERS from "../constants/managers";
 import { InputBlock } from "../styles/styles";
 import { InterfaceIssue, IssueStateEnum } from "../utils/types";
+import { checkIfValisManagerName } from "../utils/utils";
+import ManagerSearchComponent from "./issues/ManagerSearchComponent";
 
 type Tinput = string | undefined;
 
@@ -12,7 +14,6 @@ let title: Tinput = "";
 let content: Tinput = "";
 let dueDate: Tinput = "";
 let manager: Tinput = "";
-const HYPHEN = "-";
 
 function SaveIssuesComponent({
   targetIssue,
@@ -26,24 +27,26 @@ function SaveIssuesComponent({
   const titleInputRef = useRef<HTMLInputElement>(null);
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
   const dueDateInputRef = useRef<HTMLInputElement>(null);
-  const managerSelectRef = useRef<HTMLSelectElement>(null);
+  const managerInputRef = useRef<HTMLInputElement>(null);
   const stateSelectRef = useRef<HTMLSelectElement>(null);
   const initiateAllInputValue = () => {
     if (titleInputRef.current) titleInputRef.current.value = "";
     if (contentInputRef.current) contentInputRef.current.value = "";
     if (dueDateInputRef.current) dueDateInputRef.current.value = "";
-    if (managerSelectRef.current) managerSelectRef.current.value = HYPHEN;
+    if (managerInputRef.current) managerInputRef.current.value = "";
     if (stateSelectRef.current)
       stateSelectRef.current.value = IssueStateEnum.todo;
   };
+  let isValidManagerName = checkIfValisManagerName(manager);
   const handleOnIssueFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitCount(submitCount + 1);
     title = titleInputRef.current?.value;
     content = contentInputRef.current?.value;
     dueDate = dueDateInputRef.current?.value;
-    manager = managerSelectRef.current?.value;
-    if (title && content && dueDate && manager && manager !== HYPHEN) {
+    manager = managerInputRef.current?.value;
+    isValidManagerName = checkIfValisManagerName(manager);
+    if (title && content && dueDate && manager && isValidManagerName) {
       const state = stateSelectRef.current?.value as IssueStateEnum;
       if (
         !Object.keys(MANAGERS).includes(manager) ||
@@ -94,27 +97,22 @@ function SaveIssuesComponent({
           defaultValue={targetIssue && targetIssue.dueDate}
         />
       </InputBlock>
-      <InputBlock isEntered={!!(isSubmitCountEqualsZero || manager !== HYPHEN)}>
+      <InputBlock isEntered={!!(isSubmitCountEqualsZero || isValidManagerName)}>
         <h5>manager</h5>
-        <select
-          ref={managerSelectRef}
-          defaultValue={targetIssue && targetIssue.manager}
-        >
-          <option defaultChecked>-</option>
-          {Object.keys(MANAGERS).map((name) => (
-            <option key={name}>{name}</option>
-          ))}
-        </select>
+        <ManagerSearchComponent
+          managerInputRef={managerInputRef}
+          defaultValue={targetIssue?.manager}
+        />
       </InputBlock>
       <InputBlock isEntered>
         <h5>state</h5>
         <select
           ref={stateSelectRef}
-          defaultValue={targetIssue && targetIssue.state}
+          defaultValue={targetIssue ? targetIssue.state : IssueStateEnum.todo}
         >
-          <option defaultChecked>todo</option>
-          <option>doing</option>
-          <option>done</option>
+          {Object.keys(IssueStateEnum).map((state) => (
+            <option key={state}>{state}</option>
+          ))}
         </select>
       </InputBlock>
       <br />

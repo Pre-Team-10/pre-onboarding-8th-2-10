@@ -37,4 +37,4 @@ function IssueComponent({
   );
 }
 
-export default React.memo(IssueComponent);
+export default IssueComponent;

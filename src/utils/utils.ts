@@ -46,3 +46,7 @@ export const getIssuesMaxId = (issueLists: InterfaceIssueLists) => {
     ) + 1
   );
 };
+
+export const checkIfValisManagerName = (manager: string | undefined) => {
+  return manager && Object.keys(MANAGERS).includes(manager);
+};

@@ -61,3 +61,23 @@ export const Modal = styled.div`
   background-color: white;
   border-radius: 25px;
 `;
+
+export const OptionsSection = styled.span`
+  position: relative;
+`;
+
+export const Option = styled.option``;
+
+export const OptionsList = styled.section`
+  width: 250px;
+  position: absolute;
+  background-color: white;
+  cursor: pointer;
+  ${Option} {
+    padding: 12px 6px;
+    transition: all 0.3s;
+    &:hover {
+      background-color: aqua;
+    }
+  }
+`;
