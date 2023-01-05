@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Details from "./Details";
 import type { Iprops } from "../pages/Main";
 
-function Cards({ subject, handleModal, modalOpen }: Iprops) {
+function Cards({ subject, handleModal, modalOpen, setModalOpen }: Iprops) {
   const Card = styled.li`
     margin: 20px 0px;
     padding: 20px;
@@ -63,7 +63,7 @@ function Cards({ subject, handleModal, modalOpen }: Iprops) {
         </ButtonWrap>
       </Card>
 
-      <Details modalOpen={modalOpen} />
+      <Details modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </>
   );
 }

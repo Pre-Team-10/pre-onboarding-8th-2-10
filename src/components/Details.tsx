@@ -2,12 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import type { Iprops } from "../pages/Main";
 
-function Details({ modalOpen }: Iprops) {
-  const Detail = styled.section`
+function Details({ modalOpen, setModalOpen }: Iprops) {
+  const Detail = styled.section<{ modalOpen: Boolean }>`
+    display: ${modalOpen ? "block" : "none"};
     width: 500px;
   `;
 
-  console.log(modalOpen);
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <Detail>
@@ -33,6 +36,9 @@ function Details({ modalOpen }: Iprops) {
           <input type="checkbox" />
         </div>
       </div>
+      <button type="button" onClick={() => closeModal()}>
+        X
+      </button>
     </Detail>
   );
 }
