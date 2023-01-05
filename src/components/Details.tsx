@@ -37,7 +37,7 @@ function Details({ modalOpen, setModalOpen }: Iprops) {
         </div>
       </div>
       <button type="button" onClick={() => closeModal()}>
-        X
+        닫기
       </button>
     </Detail>
   );

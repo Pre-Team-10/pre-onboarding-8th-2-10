@@ -1,67 +1,21 @@
 import React from "react";
-import styled from "styled-components";
 import Details from "./Details";
 import type { Iprops } from "../pages/Main";
+import * as S from "./styled-card";
 
 function Cards({ subject, handleModal, modalOpen, setModalOpen }: Iprops) {
-  const Card = styled.li`
-    margin: 20px 0px;
-    padding: 20px;
-    font-size: 21px;
-    color: #111;
-    background-color: rgba(255, 255, 255, 0.7);
-    box-shadow: 5px 5px 15px 3px rgba(150, 150, 150, 0.6);
-    border-radius: 12px;
-  `;
-
-  const Subject = styled.h3`
-    display; block;
-    padding: 5px 0;
-    font-size: 31px;
-    line-height: 1.5;
-    `;
-
-  const ButtonWrap = styled.div`
-    height: 100%;
-    text-align: right;
-  `;
-
-  const DetailBtn = styled.button`
-    all: unset;
-    padding: 5px 10px;
-    font-size: 19px;
-    color: #111;
-    cursor: pointer;
-  `;
-
-  const ModifyBtn = styled.button`
-    all: unset;
-    padding: 5px 10px;
-    font-size: 19px;
-    color: #111;
-    cursor: pointer;
-  `;
-
-  const DeleteBtn = styled.button`
-    all: unset;
-    padding: 5px 10px;
-    font-size: 19px;
-    color: #111;
-    cursor: pointer;
-  `;
-
   return (
     <>
-      <Card>
-        <Subject>{subject}</Subject>
-        <ButtonWrap>
-          <DetailBtn type="button" onClick={() => handleModal()}>
+      <S.Card>
+        <S.Subject>{subject}</S.Subject>
+        <S.ButtonWrap>
+          <S.DetailBtn type="button" onClick={() => handleModal()}>
             확인
-          </DetailBtn>
-          <ModifyBtn type="button">수정</ModifyBtn>
-          <DeleteBtn type="button">삭제</DeleteBtn>
-        </ButtonWrap>
-      </Card>
+          </S.DetailBtn>
+          <S.ModifyBtn type="button">수정</S.ModifyBtn>
+          <S.DeleteBtn type="button">삭제</S.DeleteBtn>
+        </S.ButtonWrap>
+      </S.Card>
 
       <Details modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </>
