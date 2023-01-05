@@ -1,30 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import EMPTY_KANBAN_ISSUE_LISTS from "../constants/kanban";
-import {
-  getIssuesInLocalStorage,
-  saveUpdatedIssuesInLocalStorage,
-} from "../utils/storage";
+import { saveUpdatedIssuesInLocalStorage } from "../utils/storage";
 import {
   InterfaceIssue,
   InterfaceIssueLists,
   IssueStateEnum,
 } from "../utils/types";
+import { getIssuesMaxId } from "../utils/utils";
 
-const initialState: InterfaceIssueLists =
-  getIssuesInLocalStorage() || EMPTY_KANBAN_ISSUE_LISTS;
+const initialState: InterfaceIssueLists = EMPTY_KANBAN_ISSUE_LISTS;
 
-let maxIssueId =
-  Math.max(
-    ...Object.keys(initialState).map((issueState) => {
-      return initialState[issueState as IssueStateEnum].reduce(
-        (bigIssueId, issue) => {
-          if (issue.id === undefined) return bigIssueId;
-          return bigIssueId > issue.id ? bigIssueId : issue.id;
-        },
-        0,
-      );
-    }),
-  ) + 1;
+let maxIssueId = 1;
 
 export const counterSlice = createSlice({
   name: "kanban",
@@ -68,9 +54,19 @@ export const counterSlice = createSlice({
       }
       saveUpdatedIssuesInLocalStorage(kanbans);
     },
+    defineIssueLists: (
+      kanbans,
+      { payload: fetchedIssueLists }: { payload: InterfaceIssueLists },
+    ) => {
+      kanbans.todo = fetchedIssueLists.todo;
+      kanbans.doing = fetchedIssueLists.doing;
+      kanbans.done = fetchedIssueLists.done;
+      maxIssueId = getIssuesMaxId(fetchedIssueLists);
+    },
   },
 });
 
-export const { addIssue, deleteIssue, modifyIssue } = counterSlice.actions;
+export const { addIssue, deleteIssue, modifyIssue, defineIssueLists } =
+  counterSlice.actions;
 
 export default counterSlice.reducer;

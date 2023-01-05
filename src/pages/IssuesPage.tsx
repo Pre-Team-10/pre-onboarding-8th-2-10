@@ -1,11 +1,11 @@
 import React from "react";
-import CreateIssuesComponent from "../components/CreateIssuesComponent";
+import SaveIssuesComponent from "../components/SaveIssuesComponent";
 import ShowIssuesComponent from "../components/ShowIssuesComponent";
 
 function IssuesPage() {
   return (
     <div>
-      <CreateIssuesComponent targetIssue={undefined} hideModal={undefined} />
+      <SaveIssuesComponent targetIssue={undefined} hideModal={undefined} />
       <hr />
       <ShowIssuesComponent />
     </div>

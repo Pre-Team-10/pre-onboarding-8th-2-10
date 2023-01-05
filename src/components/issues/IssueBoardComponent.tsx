@@ -29,7 +29,8 @@ function IssueBoardComponent({
         if (targetIssue) pickTargetIssue(targetIssue);
       }
     },
-    [pickTargetIssue, issueArray],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [pickTargetIssue],
   );
   return (
     <IssueBoard>

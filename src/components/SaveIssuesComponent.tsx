@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { addIssue, modifyIssue } from "../app/kanbanSlice";
 import MANAGERS from "../constants/managers";
 import { InputBlock } from "../styles/styles";
@@ -13,7 +14,7 @@ let dueDate: Tinput = "";
 let manager: Tinput = "";
 const HYPHEN = "-";
 
-function CreateIssuesComponent({
+function SaveIssuesComponent({
   targetIssue,
   hideModal,
 }: {
@@ -44,6 +45,13 @@ function CreateIssuesComponent({
     manager = managerSelectRef.current?.value;
     if (title && content && dueDate && manager && manager !== HYPHEN) {
       const state = stateSelectRef.current?.value as IssueStateEnum;
+      if (
+        !Object.keys(MANAGERS).includes(manager) ||
+        !Object.keys(IssueStateEnum).includes(state)
+      ) {
+        toast.error("Invalid selected options.");
+        return;
+      }
       const newIssue = { title, content, dueDate, manager, state };
       if (!targetIssue) {
         dispatch(addIssue(newIssue));
@@ -117,4 +125,4 @@ function CreateIssuesComponent({
   );
 }
 
-export default CreateIssuesComponent;
+export default SaveIssuesComponent;

@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "../../styles/styles";
 import { InterfaceIssue } from "../../utils/types";
-import CreateIssuesComponent from "../CreateIssuesComponent";
+import SaveIssuesComponent from "../SaveIssuesComponent";
 
 function ModalComponent({
   targetIssue,
@@ -14,7 +14,7 @@ function ModalComponent({
     e.stopPropagation();
   return (
     <Modal onClick={stopPropagation}>
-      <CreateIssuesComponent targetIssue={targetIssue} hideModal={hideModal} />
+      <SaveIssuesComponent targetIssue={targetIssue} hideModal={hideModal} />
     </Modal>
   );
 }

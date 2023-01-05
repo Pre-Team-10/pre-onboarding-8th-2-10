@@ -1,11 +1,11 @@
 const MANAGERS = {
-  JAKE: "Jake",
-  SUJIN: "Sujin",
-  ROBERT: "Robert",
-  JULIAN: "Juilian",
-  SAMMY: "Sammy",
-  CHLOE: "Chloe",
-  JOHN: "John",
+  Jake: "Jake",
+  Sujin: "Sujin",
+  Robert: "Robert",
+  Juilian: "Juilian",
+  Sammy: "Sammy",
+  Chloe: "Chloe",
+  John: "John",
 };
 
 export default MANAGERS;

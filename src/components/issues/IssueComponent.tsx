@@ -11,7 +11,7 @@ function IssueComponent({
   handleOnDeleteButtonClick: (id?: number) => void;
   handleOnModifyButtonClick: (id?: number) => void;
 }) {
-  // console.log("Rerendered.");
+  // console.log("rerendered.");
   return (
     <KanbanBlock>
       <h5>{issue.title}</h5>
