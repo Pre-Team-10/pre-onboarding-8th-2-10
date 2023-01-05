@@ -1,5 +1,12 @@
 import React from "react";
-import { KanbanBlock, KanbanBlockFooter } from "../../styles/styles";
+import {
+  KanbanBlock,
+  KanbanTitle,
+  KanbanContent,
+  KanbanManagerWrapper,
+  KanbanBlockFooter,
+  KanbanModifyButton,
+} from "../../styles/styles";
 import { InterfaceIssue } from "../../utils/types";
 
 function IssueComponent({
@@ -14,18 +21,18 @@ function IssueComponent({
   // console.log("rerendered.");
   return (
     <KanbanBlock>
-      <h5>{issue.title}</h5>
-      <p>{issue.content}</p>
-      <div>
+      <KanbanTitle>{issue.title}</KanbanTitle>
+      <KanbanContent>{issue.content}</KanbanContent>
+      <KanbanManagerWrapper>
         {issue.manager} {issue.dueDate}
-      </div>
+      </KanbanManagerWrapper>
       <KanbanBlockFooter>
-        <button
+        <KanbanModifyButton
           type="button"
           onClick={() => handleOnModifyButtonClick(issue.id)}
         >
           modify
-        </button>
+        </KanbanModifyButton>
         <button
           type="button"
           onClick={() => handleOnDeleteButtonClick(issue.id)}

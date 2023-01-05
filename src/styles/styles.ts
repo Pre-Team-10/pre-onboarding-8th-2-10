@@ -14,10 +14,10 @@ export const IssueKanban = styled.div`
 `;
 
 export const IssueBoard = styled.div`
-  width: 33%;
+  width: 400px;
   min-height: 100px;
   padding: 15px;
-  background-color: aqua;
+  background-color: #eaecee;
   @media screen and (max-width: 768px) {
     width: 80%;
     margin: auto;
@@ -28,18 +28,41 @@ export const KanbanHeader = styled.header`
   margin-bottom: 10px;
   padding: 8px;
   text-align: center;
-  background-color: aliceblue;
+  background-color: #ffffff;
   font-weight: bolder;
 `;
 
 export const KanbanBlock = styled.div`
   margin-top: 10px;
   padding: 5px;
-  background-color: beige;
+  background-color: #ffffff;
+  box-shadow: 3px 10px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
 `;
-
+export const KanbanTitle = styled.h1`
+  font-size: 20px;
+  margin-left: 20px;
+`;
+export const KanbanContent = styled.p`
+  font-size: 15px;
+  margin-left: 20px;
+`;
+export const KanbanManagerWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  padding-right: 10px;
+  font-size: 12px;
+`;
 export const KanbanBlockFooter = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  padding-right: 10px;
   text-align: right;
+`;
+export const KanbanModifyButton = styled.button`
+  padding-right: 10px;
 `;
 
 export const ModalBackground = styled.div`
