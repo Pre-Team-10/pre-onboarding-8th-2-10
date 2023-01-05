@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 function Detail() {
   const DetailWrap = styled.section`
+    display: none;
     width: 500px;
   `;
 
@@ -10,6 +11,7 @@ function Detail() {
     <DetailWrap>
       <div>
         <h3>타이틀</h3>
+
         <div>
           <input type="text" placeholder="" />
         </div>

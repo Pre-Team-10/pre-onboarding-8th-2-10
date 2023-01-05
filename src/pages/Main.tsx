@@ -4,59 +4,6 @@ import DEFAULT_DATA from "../utils/defaultdata";
 import Cards from "../components/Cards";
 // import Detail from "../components/Details";
 
-// export interface ModalType {
-//   modalOpen: boolean;
-//   setModalOpen: boolean;
-//   showModal: boolean;
-// }
-
-function Main() {
-  const [inputSubject, setInputSubject] = useState<string>("");
-  // const [modalOpen, setModalOpen] = useState(false);
-
-  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    // const element = (e.target as HTMLInputElement).value;
-    setInputSubject(e.currentTarget.value);
-    console.log(inputSubject);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // onSubmit();
-    setInputSubject("");
-  };
-
-  // const showModal = () => {
-  //   setModalOpen(true);
-  // };
-
-  return (
-    <Container>
-      <Wrap>
-        {DEFAULT_DATA.map(({ list_id, list_title, card_contents }) => (
-          <Section key={list_id}>
-            <Title>{list_title}</Title>
-            <List>
-              {card_contents.map(({ id, subject }) => (
-                <Cards key={id} subject={subject} />
-              ))}
-              <InputWrap onSubmit={handleSubmit}>
-                <SubjectInput
-                  type="text"
-                  placeholder="제목을 입력하세요"
-                  value={inputSubject}
-                  onChange={onChange}
-                />
-                <SubjectAddBtn type="submit">추가</SubjectAddBtn>
-              </InputWrap>
-            </List>
-          </Section>
-        ))}
-      </Wrap>
-    </Container>
-  );
-}
-
 const Container = styled.div`
   width: 100%;
   height: 100vh;
@@ -126,5 +73,79 @@ const SubjectAddBtn = styled.button`
   line-height: 1.5;
   cursor: pointer;
 `;
+
+// interface ModalType {
+//   modalOpen: boolean;
+//   setModalOpen: (modalOpen: boolean) => void;
+//   handleModal: (test: boolean) => void;
+// }
+
+export interface Iprops {
+  subject: string;
+  // modalOpen: ModalType;
+  // setModalOpen: ModalType;
+  // handleModal: ModalType;
+  modalOpen: boolean;
+  setModalOpen: (modalOpen: boolean) => void;
+  handleModal: () => void;
+}
+
+function Main() {
+  const [inputSubject, setInputSubject] = useState("");
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+
+  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
+    // const element = (e.target as HTMLInputElement).value;
+    const {
+      currentTarget: { value },
+    } = e;
+    setInputSubject(value);
+    // setInputSubject(e.currentTarget.value);
+    // console.log(inputSubject);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // onSubmit();
+    setInputSubject("");
+  };
+
+  const handleModal = () => {
+    setModalOpen(true);
+    console.log(modalOpen);
+  };
+
+  return (
+    <Container>
+      <Wrap>
+        {DEFAULT_DATA.map(({ list_id, list_title, card_contents }) => (
+          <Section key={list_id}>
+            <Title>{list_title}</Title>
+            <List>
+              {card_contents.map(({ id, subject }) => (
+                <Cards
+                  key={id}
+                  subject={subject}
+                  modalOpen={modalOpen}
+                  setModalOpen={setModalOpen}
+                  handleModal={handleModal}
+                />
+              ))}
+              <InputWrap onSubmit={handleSubmit}>
+                <SubjectInput
+                  type="text"
+                  placeholder="제목을 입력하세요"
+                  value={inputSubject}
+                  onChange={onChange}
+                />
+                <SubjectAddBtn type="submit">추가</SubjectAddBtn>
+              </InputWrap>
+            </List>
+          </Section>
+        ))}
+      </Wrap>
+    </Container>
+  );
+}
 
 export default Main;

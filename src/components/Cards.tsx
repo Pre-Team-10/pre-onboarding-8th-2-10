@@ -1,14 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import Details from "./Details";
-// import type { ModalType } from "../pages/Main";
+import type { Iprops } from "../pages/Main";
 
-interface Iprops {
-  subject: string;
-  // modal: ModalType[];
-}
-
-function Cards({ subject }: Iprops) {
+function Cards({ subject, handleModal }: Iprops) {
   const Card = styled.li`
     margin: 20px 0px;
     padding: 20px;
@@ -60,7 +55,9 @@ function Cards({ subject }: Iprops) {
       <Card>
         <Subject>{subject}</Subject>
         <ButtonWrap>
-          <DetailBtn type="button">확인</DetailBtn>
+          <DetailBtn type="button" onClick={() => handleModal()}>
+            확인
+          </DetailBtn>
           <ModifyBtn type="button">수정</ModifyBtn>
           <DeleteBtn type="button">삭제</DeleteBtn>
         </ButtonWrap>
