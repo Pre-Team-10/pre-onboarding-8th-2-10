@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const IssueKanban = styled.div`
   min-width: 400px;
   display: flex;
-  background: linear-gradient(45deg, blue, pink);
+  background-color: rgba(255, 255, 255, 0.7);
   @media screen and (max-width: 768px) {
     display: block;
   }

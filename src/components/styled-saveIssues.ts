@@ -4,7 +4,9 @@ export const Wrapper = styled.div`
   width: 1600px;
   margin: 0px auto;
   padding: 20px 0;
-  background: linear-gradient(45deg, blue, pink);
+  @media screen and (max-width: 1600px) {
+    width: 400px;
+  }
 `;
 
 export const SaveIssues = styled.form`
