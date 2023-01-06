@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { defineIssueLists } from "../app/kanbanSlice";
+import useAddIssueModal from "../hooks/useAddIssueModal";
 import { IssueKanban, ModalBackground } from "../styles/styles";
 import { getIssuesInLocalStorage } from "../utils/storage";
 import {
@@ -12,24 +13,27 @@ import {
 } from "../utils/types";
 import IssueBoardComponent from "./issues/IssueBoardComponent";
 import ModalComponent from "./modal/ModalComponent";
+import SaveIssuesComponent from "./SaveIssuesComponent";
 
 let targetIssue: InterfaceIssue | undefined;
 
 function ShowIssuesComponent() {
   const dispatch = useDispatch();
+  const { isModalOpened, toggleModal } = useAddIssueModal();
   const issues = useSelector(
     ({ kanban }: { kanban: InterfaceIssueLists }) => kanban,
   );
-  const [targetIssueId, setTargetIssueId] = useState(-1);
   const [isFetchingIssues, setIsFetchingIssues] = useState(true);
-  const pickTargetIssue = useCallback((issue: InterfaceIssue) => {
-    if (issue.id) setTargetIssueId(issue.id);
-    targetIssue = issue;
-  }, []);
+  const pickTargetIssue = useCallback(
+    (issue: InterfaceIssue) => {
+      if (issue.id) targetIssue = issue;
+      toggleModal();
+    },
+    [toggleModal],
+  );
   const hideModal = () => {
-    setTargetIssueId(-1);
     targetIssue = undefined;
-    console.log("showmodal", targetIssue, targetIssueId);
+    toggleModal();
   };
   useEffect(() => {
     (async () => {
@@ -45,9 +49,9 @@ function ShowIssuesComponent() {
   }, [dispatch]);
   return (
     <>
-      {!isFetchingIssues ? (
-        <IssueKanban>
-          {Object.keys(issues).map((issueState) => {
+      <IssueKanban>
+        {!isFetchingIssues ? (
+          Object.keys(issues).map((issueState) => {
             const state = issueState as IssueStateEnum;
             return (
               <IssueBoardComponent
@@ -55,16 +59,22 @@ function ShowIssuesComponent() {
                 issueState={state}
                 issueArray={issues[state]}
                 pickTargetIssue={pickTargetIssue}
+                toggleModal={toggleModal}
               />
             );
-          })}
-        </IssueKanban>
-      ) : (
-        <div>fetching issues...</div>
-      )}
-      {targetIssue && targetIssueId !== -1 && (
+          })
+        ) : (
+          <div>Fetching issues...</div>
+        )}
+      </IssueKanban>
+      {isModalOpened && (
         <ModalBackground onClick={hideModal}>
-          <ModalComponent targetIssue={targetIssue} hideModal={hideModal} />
+          <ModalComponent>
+            <SaveIssuesComponent
+              targetIssue={targetIssue}
+              hideModal={hideModal}
+            />
+          </ModalComponent>
         </ModalBackground>
       )}
     </>

@@ -1,22 +1,10 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { Modal } from "../../styles/styles";
-import { InterfaceIssue } from "../../utils/types";
-import SaveIssuesComponent from "../SaveIssuesComponent";
 
-function ModalComponent({
-  targetIssue,
-  hideModal,
-}: {
-  targetIssue: InterfaceIssue | undefined;
-  hideModal: (() => void) | undefined;
-}) {
+function ModalComponent({ children }: PropsWithChildren) {
   const stopPropagation = (e: React.MouseEvent<HTMLDivElement>) =>
     e.stopPropagation();
-  return (
-    <Modal onClick={stopPropagation}>
-      <SaveIssuesComponent targetIssue={targetIssue} hideModal={hideModal} />
-    </Modal>
-  );
+  return <Modal onClick={stopPropagation}>{children}</Modal>;
 }
 
 export default ModalComponent;

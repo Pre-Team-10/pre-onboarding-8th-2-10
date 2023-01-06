@@ -1,4 +1,4 @@
-export const duplicatePrevent = () => {
+export const getThrottlingEater = () => {
   let isClicked = false;
   return (callback: () => void) => {
     if (isClicked) return;
