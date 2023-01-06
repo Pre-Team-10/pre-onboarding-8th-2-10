@@ -12,6 +12,7 @@ import {
   ModalSelect,
   KanbanModifyButton,
 } from "../styles/styles";
+import { duplicatePrevent } from "../utils/duplicationPrevent";
 import { InterfaceIssue, IssueStateEnum } from "../utils/types";
 import { checkIfValisManagerName } from "../utils/utils";
 import ManagerSearchComponent from "./issues/ManagerSearchComponent";
@@ -45,39 +46,42 @@ function SaveIssuesComponent({
     if (stateSelectRef.current)
       stateSelectRef.current.value = IssueStateEnum.todo;
   };
+  const preventDuplicate = duplicatePrevent();
   let isValidManagerName = checkIfValisManagerName(manager);
   const handleOnIssueFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSubmitCount(submitCount + 1);
-    title = titleInputRef.current?.value;
-    content = contentInputRef.current?.value;
-    dueDate = dueDateInputRef.current?.value;
-    manager = managerInputRef.current?.value;
-    isValidManagerName = checkIfValisManagerName(manager);
-    if (title && content && dueDate && manager && isValidManagerName) {
-      const state = stateSelectRef.current?.value as IssueStateEnum;
-      if (
-        !Object.keys(MANAGERS).includes(manager) ||
-        !Object.keys(IssueStateEnum).includes(state)
-      ) {
-        toast.error("Invalid selected options.");
-        return;
+    preventDuplicate(() => {
+      e.preventDefault();
+      setSubmitCount(submitCount + 1);
+      title = titleInputRef.current?.value;
+      content = contentInputRef.current?.value;
+      dueDate = dueDateInputRef.current?.value;
+      manager = managerInputRef.current?.value;
+      isValidManagerName = checkIfValisManagerName(manager);
+      if (title && content && dueDate && manager && isValidManagerName) {
+        const state = stateSelectRef.current?.value as IssueStateEnum;
+        if (
+          !Object.keys(MANAGERS).includes(manager) ||
+          !Object.keys(IssueStateEnum).includes(state)
+        ) {
+          toast.error("Invalid selected options.");
+          return;
+        }
+        const newIssue = { title, content, dueDate, manager, state };
+        if (!targetIssue) {
+          dispatch(addIssue(newIssue));
+          initiateAllInputValue();
+        } else {
+          dispatch(
+            modifyIssue({
+              ...newIssue,
+              id: targetIssue.id,
+              prevState: targetIssue.state,
+            }),
+          );
+          if (hideModal) hideModal();
+        }
       }
-      const newIssue = { title, content, dueDate, manager, state };
-      if (!targetIssue) {
-        dispatch(addIssue(newIssue));
-        initiateAllInputValue();
-      } else {
-        dispatch(
-          modifyIssue({
-            ...newIssue,
-            id: targetIssue.id,
-            prevState: targetIssue.state,
-          }),
-        );
-        if (hideModal) hideModal();
-      }
-    }
+    });
   };
   const isSubmitCountEqualsZero = submitCount === 0;
   return (
