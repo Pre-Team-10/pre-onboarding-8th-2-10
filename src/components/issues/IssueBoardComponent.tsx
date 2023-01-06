@@ -1,9 +1,17 @@
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteIssue } from "../../app/kanbanSlice";
-import { IssueBoard, KanbanHeader, AddIssueButton } from "../../styles/styles";
+import {
+  IssueBoard,
+  KanbanHeader,
+  AddIssueButton,
+  ModalBackground,
+} from "../../styles/styles";
 import { InterfaceIssue, IssueStateEnum } from "../../utils/types";
 import IssueComponent from "./IssueComponent";
+import ModalComponent from "../modal/ModalComponent";
+
+let targetIssueOpen: InterfaceIssue | undefined;
 
 function IssueBoardComponent({
   issueArray,
@@ -15,6 +23,7 @@ function IssueBoardComponent({
   pickTargetIssue: (targetIssue: InterfaceIssue) => void;
 }) {
   const dispatch = useDispatch();
+  const [targetIssueId, setTargetIssueId] = useState(-1);
   const handleOnDeleteButtonClick = useCallback(
     (id?: number) => {
       if (id !== undefined)
@@ -41,10 +50,17 @@ function IssueBoardComponent({
     },
     [pickTargetIssue, issueArray],
   );
-
+  const [isOpenModal, setOpenModal] = useState<boolean>(false);
   const handleOnAddButtonClick = useCallback(() => {
-    console.log("오픈모달");
-  }, []);
+    setOpenModal(!isOpenModal);
+    console.log("모달 클릭", targetIssueId);
+  }, [isOpenModal, targetIssueId]);
+
+  const hideModal = () => {
+    setTargetIssueId(-1);
+    targetIssueOpen = undefined;
+    console.log("모달 바깥 부분 클릭 targetIssueId", targetIssueId);
+  };
 
   return (
     <IssueBoard>
@@ -58,6 +74,11 @@ function IssueBoardComponent({
           handleOnOpenButtonClick={handleOnOpenButtonClick}
         />
       ))}
+      {isOpenModal && targetIssueId !== 1 && (
+        <ModalBackground onClick={hideModal}>
+          <ModalComponent targetIssue={targetIssueOpen} hideModal={hideModal} />
+        </ModalBackground>
+      )}
       <AddIssueButton type="button" onClick={handleOnAddButtonClick}>
         + ADD
       </AddIssueButton>

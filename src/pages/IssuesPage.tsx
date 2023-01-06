@@ -8,7 +8,7 @@ function IssuesPage() {
     <div>
       <MainTitle>Issue Board</MainTitle>
       <ShowIssuesComponent />
-      <SaveIssuesComponent targetIssue={undefined} hideModal={undefined} />
+      {/* <SaveIssuesComponent targetIssue={undefined} hideModal={undefined} /> */}
       {/* <Loading>Loading...</Loading> */}
     </div>
   );

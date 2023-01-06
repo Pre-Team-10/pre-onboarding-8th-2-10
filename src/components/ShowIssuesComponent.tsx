@@ -29,6 +29,7 @@ function ShowIssuesComponent() {
   const hideModal = () => {
     setTargetIssueId(-1);
     targetIssue = undefined;
+    console.log("showmodal", targetIssue, targetIssueId);
   };
   useEffect(() => {
     (async () => {
