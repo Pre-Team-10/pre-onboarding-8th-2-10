@@ -1,12 +1,9 @@
 import styled from "styled-components";
 
-export const InputBlock = styled.div<{ isEntered?: boolean }>`
-  width: 500px;
-  background-color: ${({ isEntered }) => (isEntered ? "white" : "tomato")};
-`;
 export const MainTitle = styled.h2`
   font-weight: 500;
   text-align: center;
+  font-weight: bolder;
 `;
 
 export const IssueKanban = styled.div`
@@ -17,6 +14,7 @@ export const IssueKanban = styled.div`
     display: block;
   }
 `;
+
 export const IssueBoard = styled.div`
   width: 300px;
   min-height: 100px;
@@ -27,7 +25,8 @@ export const IssueBoard = styled.div`
     margin: auto;
   }
 `;
-export const AddIssueButton = styled.button`
+
+export const IssueAddButton = styled.button`
   height: 28px;
   min-width: 56px;
   margin-top: 2px;
@@ -50,17 +49,20 @@ export const KanbanBlock = styled.div`
   margin-top: 10px;
   padding: 5px;
   background-color: #ffffff;
-  box-shadow: 3px 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.06);
   border-radius: 15px;
 `;
+
 export const KanbanTitle = styled.h1`
   font-size: 20px;
   margin-left: 20px;
 `;
+
 export const KanbanContent = styled.p`
   font-size: 15px;
   margin-left: 20px;
 `;
+
 export const KanbanManagerWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -68,6 +70,7 @@ export const KanbanManagerWrapper = styled.div`
   padding-right: 10px;
   font-size: 12px;
 `;
+
 export const KanbanBlockFooter = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -75,6 +78,7 @@ export const KanbanBlockFooter = styled.div`
   padding-right: 10px;
   text-align: right;
 `;
+
 export const KanbanModifyButton = styled.button`
   display: inline-block;
   outline: 0;
@@ -105,66 +109,77 @@ export const ModalBackground = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
 `;
-export const Modal = styled.div`
-  width: 550px;
-  height: 620px;
-  margin: auto;
-  padding: 10px;
-  padding-left: 50px;
-  background-color: white;
-  border-radius: 25px;
-`;
+
 export const ModalFormTitle = styled.h2`
   text-align: center;
 `;
+
 export const ModalTitle = styled.h1`
   font-size: 20px;
 `;
+
 export const ModalInput = styled.input`
-  width: 99%;
   margin-bottom: 5px;
   border: 1px solid;
-  font-size: 20px;
 `;
+
 export const ModalTextarea = styled.textarea`
-  width: 99%;
   height: 100px;
   margin-bottom: 5px;
-  font-size: 20px;
+  resize: none;
 `;
+
 export const ModalSelect = styled.select`
-  width: 100%;
   margin-bottom: 5px;
-  font-size: 20px;
 `;
-export const OptionsSection = styled.span`
-  position: relative;
-`;
-export const Option = styled.option``;
-export const OptionsList = styled.section`
-  width: 100%;
-  position: absolute;
-  background-color: white;
-  cursor: pointer;
-  ${Option} {
-    padding: 12px 6px;
-    transition: all 0.3s;
-    &:hover {
-      background-color: #eaecee;
-    }
+
+export const InputBlock = styled.div<{ isEntered?: boolean }>`
+  width: 80%;
+  box-sizing: border-box;
+  ${ModalTitle} {
+    color: ${({ isEntered }) => (isEntered ? "grey" : "tomato")};
+  }
+  ${ModalInput}, ${ModalTextarea}, ${ModalSelect} {
+    width: 100%;
+    padding: 8px;
+    outline: none;
+    border: none;
+    background-color: #eee;
+    box-sizing: border-box;
   }
 `;
 
-export const Loading = styled.div`
+export const Modal = styled.div`
+  width: 550px;
+  height: 650px;
+  background-color: white;
+  border-radius: 25px;
+  ${InputBlock} {
+    margin: auto;
+  }
+`;
+
+export const OptionsSection = styled.span`
+  position: relative;
+`;
+
+export const Option = styled.option`
+  padding: 12px 6px;
+  transition: all 0.3s;
+`;
+
+export const OptionsList = styled.section`
   width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  max-height: 170px;
+  overflow-y: scroll;
   position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
+  background-color: aliceblue;
+  cursor: pointer;
+  ${Option} {
+    &:hover {
+      background-color: white;
+    }
+  }
 `;

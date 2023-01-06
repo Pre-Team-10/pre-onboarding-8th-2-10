@@ -8,32 +8,35 @@ import {
   KanbanModifyButton,
 } from "../../styles/styles";
 import { InterfaceIssue } from "../../utils/types";
-import { duplicatePrevent } from "../../utils/duplicationPrevent";
+import { getThrottlingEater } from "../../utils/throttling";
 
 function IssueComponent({
   issue,
   handleOnDeleteButtonClick,
   handleOnModifyButtonClick,
-  handleOnOpenButtonClick,
 }: {
   issue: InterfaceIssue;
   handleOnDeleteButtonClick: (id?: number) => void;
   handleOnModifyButtonClick: (id?: number) => void;
-  handleOnOpenButtonClick: (id?: number) => void;
 }) {
-  const preventDuplicate = duplicatePrevent();
+  const { id, title, content, dueDate, manager } = issue;
+  const preventClickThrottling = getThrottlingEater();
   return (
-    <KanbanBlock onClick={() => handleOnOpenButtonClick(issue.id)}>
-      <KanbanTitle>{issue.title}</KanbanTitle>
-      <KanbanContent>{issue.content}</KanbanContent>
+    <KanbanBlock>
+      <KanbanTitle>
+        {title.length < 25 ? title : `${title.slice(0, 25)}...`}
+      </KanbanTitle>
+      <KanbanContent>
+        {content.length < 30 ? content : `${content.slice(0, 30)}...`}
+      </KanbanContent>
       <KanbanManagerWrapper>
-        {issue.manager} {issue.dueDate}
+        {manager} {dueDate}
       </KanbanManagerWrapper>
       <KanbanBlockFooter>
         <KanbanModifyButton
           type="button"
           onClick={() =>
-            preventDuplicate(() => handleOnModifyButtonClick(issue.id))
+            preventClickThrottling(() => handleOnModifyButtonClick(id))
           }
         >
           modify
@@ -41,7 +44,7 @@ function IssueComponent({
         <KanbanModifyButton
           type="button"
           onClick={() =>
-            preventDuplicate(() => handleOnDeleteButtonClick(issue.id))
+            preventClickThrottling(() => handleOnDeleteButtonClick(issue.id))
           }
         >
           delete

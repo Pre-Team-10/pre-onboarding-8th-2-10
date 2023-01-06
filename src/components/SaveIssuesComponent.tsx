@@ -12,7 +12,7 @@ import {
   ModalSelect,
   KanbanModifyButton,
 } from "../styles/styles";
-import { duplicatePrevent } from "../utils/duplicationPrevent";
+import { getThrottlingEater } from "../utils/throttling";
 import { InterfaceIssue, IssueStateEnum } from "../utils/types";
 import { checkIfValisManagerName } from "../utils/utils";
 import ManagerSearchComponent from "./issues/ManagerSearchComponent";
@@ -29,7 +29,7 @@ function SaveIssuesComponent({
   hideModal,
 }: {
   targetIssue: InterfaceIssue | undefined;
-  hideModal: (() => void) | undefined;
+  hideModal: () => void;
 }) {
   const dispatch = useDispatch();
   const [submitCount, setSubmitCount] = useState(0);
@@ -46,10 +46,10 @@ function SaveIssuesComponent({
     if (stateSelectRef.current)
       stateSelectRef.current.value = IssueStateEnum.todo;
   };
-  const preventDuplicate = duplicatePrevent();
+  const preventClickThrottling = getThrottlingEater();
   let isValidManagerName = checkIfValisManagerName(manager);
   const handleOnIssueFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    preventDuplicate(() => {
+    preventClickThrottling(() => {
       e.preventDefault();
       setSubmitCount(submitCount + 1);
       title = titleInputRef.current?.value;
@@ -78,8 +78,8 @@ function SaveIssuesComponent({
               prevState: targetIssue.state,
             }),
           );
-          if (hideModal) hideModal();
         }
+        hideModal();
       }
     });
   };
@@ -130,9 +130,9 @@ function SaveIssuesComponent({
         </ModalSelect>
       </InputBlock>
       <br />
-      <div>
+      <InputBlock>
         <KanbanModifyButton type="submit">save</KanbanModifyButton>
-      </div>
+      </InputBlock>
     </form>
   );
 }
