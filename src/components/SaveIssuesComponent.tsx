@@ -3,7 +3,15 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { addIssue, modifyIssue } from "../app/kanbanSlice";
 import MANAGERS from "../constants/managers";
-import { InputBlock } from "../styles/styles";
+import {
+  InputBlock,
+  ModalFormTitle,
+  ModalTitle,
+  ModalInput,
+  ModalTextarea,
+  ModalSelect,
+  KanbanModifyButton,
+} from "../styles/styles";
 import { InterfaceIssue, IssueStateEnum } from "../utils/types";
 import { checkIfValisManagerName } from "../utils/utils";
 import ManagerSearchComponent from "./issues/ManagerSearchComponent";
@@ -74,50 +82,52 @@ function SaveIssuesComponent({
   const isSubmitCountEqualsZero = submitCount === 0;
   return (
     <form onSubmit={handleOnIssueFormSubmit}>
-      <h4>memo your issues!</h4>
+      <ModalFormTitle>memo your issues!</ModalFormTitle>
       <InputBlock isEntered={!!(isSubmitCountEqualsZero || title)}>
-        <h5>title</h5>
-        <input
+        <ModalTitle>title</ModalTitle>
+        <ModalInput
+          placeholder="Please enter a title"
           ref={titleInputRef}
           defaultValue={targetIssue && targetIssue.title}
         />
       </InputBlock>
       <InputBlock isEntered={!!(isSubmitCountEqualsZero || content)}>
-        <h5>content</h5>
-        <textarea
+        <ModalTitle>content</ModalTitle>
+        <ModalTextarea
+          placeholder="Please enter a content"
           ref={contentInputRef}
           defaultValue={targetIssue && targetIssue.content}
         />
       </InputBlock>
       <InputBlock isEntered={!!(isSubmitCountEqualsZero || dueDate)}>
-        <h5>due date</h5>
-        <input
+        <ModalTitle>due date</ModalTitle>
+        <ModalInput
           type="datetime-local"
           ref={dueDateInputRef}
           defaultValue={targetIssue && targetIssue.dueDate}
         />
       </InputBlock>
       <InputBlock isEntered={!!(isSubmitCountEqualsZero || isValidManagerName)}>
-        <h5>manager</h5>
+        <ModalTitle>manager</ModalTitle>
         <ManagerSearchComponent
           managerInputRef={managerInputRef}
           defaultValue={targetIssue?.manager}
         />
       </InputBlock>
       <InputBlock isEntered>
-        <h5>state</h5>
-        <select
+        <ModalTitle>state</ModalTitle>
+        <ModalSelect
           ref={stateSelectRef}
           defaultValue={targetIssue ? targetIssue.state : IssueStateEnum.todo}
         >
           {Object.keys(IssueStateEnum).map((state) => (
             <option key={state}>{state}</option>
           ))}
-        </select>
+        </ModalSelect>
       </InputBlock>
       <br />
       <div>
-        <button type="submit">save</button>
+        <KanbanModifyButton type="submit">save</KanbanModifyButton>
       </div>
     </form>
   );

@@ -23,6 +23,9 @@
     "no-var": "error",
     "multiline-ternary": "error",
     "no-param-reassign": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "react/button-has-type": "off"
   }
 }

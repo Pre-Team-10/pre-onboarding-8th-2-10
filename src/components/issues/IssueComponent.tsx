@@ -1,37 +1,46 @@
 import React from "react";
-import { KanbanBlock, KanbanBlockFooter } from "../../styles/styles";
+import {
+  KanbanBlock,
+  KanbanTitle,
+  KanbanContent,
+  KanbanManagerWrapper,
+  KanbanBlockFooter,
+  KanbanModifyButton,
+} from "../../styles/styles";
 import { InterfaceIssue } from "../../utils/types";
 
 function IssueComponent({
   issue,
   handleOnDeleteButtonClick,
   handleOnModifyButtonClick,
+  handleOnOpenButtonClick,
 }: {
   issue: InterfaceIssue;
   handleOnDeleteButtonClick: (id?: number) => void;
   handleOnModifyButtonClick: (id?: number) => void;
+  handleOnOpenButtonClick: (id?: number) => void;
 }) {
   // console.log("rerendered.");
   return (
-    <KanbanBlock>
-      <h5>{issue.title}</h5>
-      <p>{issue.content}</p>
-      <div>
+    <KanbanBlock onClick={() => handleOnOpenButtonClick(issue.id)}>
+      <KanbanTitle>{issue.title}</KanbanTitle>
+      <KanbanContent>{issue.content}</KanbanContent>
+      <KanbanManagerWrapper>
         {issue.manager} {issue.dueDate}
-      </div>
+      </KanbanManagerWrapper>
       <KanbanBlockFooter>
-        <button
+        <KanbanModifyButton
           type="button"
           onClick={() => handleOnModifyButtonClick(issue.id)}
         >
           modify
-        </button>
-        <button
+        </KanbanModifyButton>
+        <KanbanModifyButton
           type="button"
           onClick={() => handleOnDeleteButtonClick(issue.id)}
         >
           delete
-        </button>
+        </KanbanModifyButton>
       </KanbanBlockFooter>
     </KanbanBlock>
   );
