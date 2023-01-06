@@ -13,14 +13,16 @@ function IssueComponent({
   issue,
   handleOnDeleteButtonClick,
   handleOnModifyButtonClick,
+  handleOnOpenButtonClick,
 }: {
   issue: InterfaceIssue;
   handleOnDeleteButtonClick: (id?: number) => void;
   handleOnModifyButtonClick: (id?: number) => void;
+  handleOnOpenButtonClick: (id?: number) => void;
 }) {
   // console.log("rerendered.");
   return (
-    <KanbanBlock>
+    <KanbanBlock onClick={() => handleOnOpenButtonClick(issue.id)}>
       <KanbanTitle>{issue.title}</KanbanTitle>
       <KanbanContent>{issue.content}</KanbanContent>
       <KanbanManagerWrapper>
@@ -33,12 +35,12 @@ function IssueComponent({
         >
           modify
         </KanbanModifyButton>
-        <button
+        <KanbanModifyButton
           type="button"
           onClick={() => handleOnDeleteButtonClick(issue.id)}
         >
           delete
-        </button>
+        </KanbanModifyButton>
       </KanbanBlockFooter>
     </KanbanBlock>
   );

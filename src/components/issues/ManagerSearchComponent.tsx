@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import MANAGERS from "../../constants/managers";
-import { Option, OptionsList, OptionsSection } from "../../styles/styles";
+import {
+  Option,
+  OptionsList,
+  OptionsSection,
+  ModalInput,
+} from "../../styles/styles";
 
 function ManagerSearchComponent({
   managerInputRef,
@@ -30,7 +35,7 @@ function ManagerSearchComponent({
   };
   return (
     <OptionsSection>
-      <input
+      <ModalInput
         onChange={handleOnManagerInputChange}
         ref={managerInputRef}
         defaultValue={defaultValue}

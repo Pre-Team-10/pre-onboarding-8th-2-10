@@ -1,14 +1,15 @@
 import React from "react";
 import SaveIssuesComponent from "../components/SaveIssuesComponent";
 import ShowIssuesComponent from "../components/ShowIssuesComponent";
+import { MainTitle } from "../styles/styles";
 
 function IssuesPage() {
   return (
     <div>
-      {/* <SaveIssuesComponent targetIssue={undefined} hideModal={undefined} /> */}
-      {/* <hr /> */}
-      <h1>Issue Board</h1>
+      <MainTitle>Issue Board</MainTitle>
       <ShowIssuesComponent />
+      <SaveIssuesComponent targetIssue={undefined} hideModal={undefined} />
+      {/* <Loading>Loading...</Loading> */}
     </div>
   );
 }
