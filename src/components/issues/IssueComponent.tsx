@@ -8,6 +8,7 @@ import {
   KanbanModifyButton,
 } from "../../styles/styles";
 import { InterfaceIssue } from "../../utils/types";
+import { duplicatePrevent } from "../../utils/duplicationPrevent";
 
 function IssueComponent({
   issue,
@@ -20,7 +21,7 @@ function IssueComponent({
   handleOnModifyButtonClick: (id?: number) => void;
   handleOnOpenButtonClick: (id?: number) => void;
 }) {
-  // console.log("rerendered.");
+  const preventDuplicate = duplicatePrevent();
   return (
     <KanbanBlock onClick={() => handleOnOpenButtonClick(issue.id)}>
       <KanbanTitle>{issue.title}</KanbanTitle>
@@ -31,13 +32,17 @@ function IssueComponent({
       <KanbanBlockFooter>
         <KanbanModifyButton
           type="button"
-          onClick={() => handleOnModifyButtonClick(issue.id)}
+          onClick={() =>
+            preventDuplicate(() => handleOnModifyButtonClick(issue.id))
+          }
         >
           modify
         </KanbanModifyButton>
         <KanbanModifyButton
           type="button"
-          onClick={() => handleOnDeleteButtonClick(issue.id)}
+          onClick={() =>
+            preventDuplicate(() => handleOnDeleteButtonClick(issue.id))
+          }
         >
           delete
         </KanbanModifyButton>
