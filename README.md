@@ -125,13 +125,15 @@ src
  ┣ constants
  ┃ ┣ kanban.ts
  ┃ ┗ managers.ts
+ ┣ hooks
+ ┃ ┣ useAddIssueModal.ts
  ┣ pages
  ┃ ┗ IssuesPage.tsx
  ┣ styles
  ┃ ┗ styles.ts
  ┣ utils
- ┃ ┣ duplicationPrevent.ts
  ┃ ┣ storage.ts
+ ┃ ┣ throttling.ts
  ┃ ┣ types.ts
  ┃ ┗ utils.ts
  ┣ App.tsx
@@ -167,8 +169,10 @@ src
 ### 1. 이슈 CRUD
 
 ```ts
-// 최상단 컴포넌트가 mount된 후, 실제 api를 호출하는 것처럼 useEffect 훅의 내부에 이슈 목록이 담긴 promise를
-// 반환하는 함수를 호출하여 이 응답받은 이슈 목록들이 반영된 화면을 setState로 업데이트 할 수 있도록 구현했습니다.
+/*
+최상단 컴포넌트가 mount된 후, 실제 api를 호출하는 것처럼 useEffect 훅의 내부에 이슈 목록이 담긴 promise를
+반환하는 함수를 호출하여 이 응답받은 이슈 목록들이 반영된 화면을 setState로 업데이트 할 수 있도록 구현했습니다.
+*/
 
 useEffect(() => {
   (async () => {
@@ -185,9 +189,11 @@ useEffect(() => {
 ```
 
 ```ts
-// 이슈 목록을 불러오는 함수는 로컬스토리지에서 데이터를 가져와 비동기처리를 통해 전역상태에 담길 수 있도록 구성했습니다.
-// 만약 로컬스토리지에 저장된 json string의 형식이 훼손되어 브라우저에서 에러가 발생할 경우를 가정하여
-// try catch 구문의 사용 및 컴포넌트에서 toast 알람 함수를 호출하여 예외 상황을 처리하였습니다.
+/*
+이슈 목록을 불러오는 함수는 로컬스토리지에서 데이터를 가져와 비동기처리를 통해 전역상태에 담길 수 있도록 구성했습니다.
+만약 로컬스토리지에 저장된 json string의 형식이 훼손되어 브라우저에서 에러가 발생할 경우를 가정하여
+try catch 구문의 사용 및 컴포넌트에서 toast 알람 함수를 호출하여 예외 상황을 처리하였습니다.
+*/
 
 export const getIssuesInLocalStorage = () => {
   return new Promise<InterfaceIssueLists | null>(
@@ -211,9 +217,11 @@ export const getIssuesInLocalStorage = () => {
 ```
 
 ```ts
-// 악의적인 코드나 사용자로 인해 로컬스토리지에 저장된 json string이 훼손될 수 있기 떄문에,
-// 로컬스토리지에서 이슈 목록을 불러온 후 아래의 함수로 모든 이슈 객체들이 올바른 속성과 속성값을 가지고있는지 확인하도록 했습니다.
-// 이에 따라, 불완전하거나 훼손된 이슈 목록들은 삭제될 수 있도록 구현했습니다.
+/*
+악의적인 코드나 사용자로 인해 로컬스토리지에 저장된 json string이 훼손될 수 있기 떄문에,
+로컬스토리지에서 이슈 목록을 불러온 후 아래의 함수로 모든 이슈 객체들이 올바른 속성과 속성값을 가지고있는지 확인하도록 했습니다.
+이에 따라, 불완전하거나 훼손된 이슈 목록들은 삭제될 수 있도록 구현했습니다.
+*/
 
 export const filterUnverifiedAndDuplicatedIssues = (
   issueLists: InterfaceIssueLists,
@@ -272,24 +280,25 @@ export const getThrottlingEater = () => {
 ### 3. 모달 팝업 컴포넌트
 
 ```ts
-function ModalComponent({
-  targetIssue,
-  hideModal,
-}: {
-  targetIssue: InterfaceIssue | undefined;
-  hideModal: (() => void) | undefined;
-}) {
+<ModalBackground onClick={hideModal}>
+  <ModalComponent>
+    <SaveIssuesComponent
+      targetIssue={targetIssue}
+      hideModal={hideModal}
+    />
+  </ModalComponent>
+</ModalBackground>
+```
+
+```ts
+function ModalComponent({ children }: PropsWithChildren) {
   const stopPropagation = (e: React.MouseEvent<HTMLDivElement>) =>
     e.stopPropagation();
-  return (
-    <Modal onClick={stopPropagation}>
-      <SaveIssuesComponent targetIssue={targetIssue} hideModal={hideModal} />
-    </Modal>
-  );
+  return <Modal onClick={stopPropagation}>{children}</Modal>;
 }
 ```
 
-- [x] 한 개의 모달 컴포넌트로 이슈 생성 및 수정에 재사용했습니다.
+- [x] 합성 컴포넌트 패턴 및 props의 children 속성을 사용하여 한 개의 모달 컴포넌트로 이슈 생성 및 수정에 재사용했습니다.
 
 ### 예외 처리
 
