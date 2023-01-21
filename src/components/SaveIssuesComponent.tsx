@@ -12,7 +12,6 @@ import {
   ModalSelect,
   KanbanModifyButton,
 } from "../styles/styles";
-import { getThrottlingEater } from "../utils/throttling";
 import { InterfaceIssue, IssueStateEnum } from "../utils/types";
 import { checkIfValisManagerName } from "../utils/utils";
 import ManagerSearchComponent from "./issues/ManagerSearchComponent";
@@ -25,9 +24,11 @@ let dueDate: Tinput = "";
 let manager: Tinput = "";
 
 function SaveIssuesComponent({
+  clickedState,
   targetIssue,
   hideModal,
 }: {
+  clickedState: IssueStateEnum;
   targetIssue: InterfaceIssue | undefined;
   hideModal: () => void;
 }) {
@@ -46,42 +47,39 @@ function SaveIssuesComponent({
     if (stateSelectRef.current)
       stateSelectRef.current.value = IssueStateEnum.todo;
   };
-  const preventClickThrottling = getThrottlingEater();
   let isValidManagerName = checkIfValisManagerName(manager);
   const handleOnIssueFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    preventClickThrottling(() => {
-      e.preventDefault();
-      setSubmitCount(submitCount + 1);
-      title = titleInputRef.current?.value;
-      content = contentInputRef.current?.value;
-      dueDate = dueDateInputRef.current?.value;
-      manager = managerInputRef.current?.value;
-      isValidManagerName = checkIfValisManagerName(manager);
-      if (title && content && dueDate && manager && isValidManagerName) {
-        const state = stateSelectRef.current?.value as IssueStateEnum;
-        if (
-          !Object.keys(MANAGERS).includes(manager) ||
-          !Object.keys(IssueStateEnum).includes(state)
-        ) {
-          toast.error("Invalid selected options.");
-          return;
-        }
-        const newIssue = { title, content, dueDate, manager, state };
-        if (!targetIssue) {
-          dispatch(addIssue(newIssue));
-          initiateAllInputValue();
-        } else {
-          dispatch(
-            modifyIssue({
-              ...newIssue,
-              id: targetIssue.id,
-              prevState: targetIssue.state,
-            }),
-          );
-        }
-        hideModal();
+    e.preventDefault();
+    setSubmitCount(submitCount + 1);
+    title = titleInputRef.current?.value;
+    content = contentInputRef.current?.value;
+    dueDate = dueDateInputRef.current?.value;
+    manager = managerInputRef.current?.value;
+    isValidManagerName = checkIfValisManagerName(manager);
+    if (title && content && dueDate && manager && isValidManagerName) {
+      const state = stateSelectRef.current?.value as IssueStateEnum;
+      if (
+        !Object.keys(MANAGERS).includes(manager) ||
+        !Object.keys(IssueStateEnum).includes(state)
+      ) {
+        toast.error("Invalid selected options.");
+        return;
       }
-    });
+      const newIssue = { title, content, dueDate, manager, state };
+      if (!targetIssue) {
+        dispatch(addIssue(newIssue));
+        initiateAllInputValue();
+      } else {
+        dispatch(
+          modifyIssue({
+            ...newIssue,
+            id: targetIssue.id,
+            prevState: targetIssue.state,
+          }),
+        );
+      }
+      hideModal();
+    }
   };
   const isSubmitCountEqualsZero = submitCount === 0;
   return (
@@ -122,7 +120,7 @@ function SaveIssuesComponent({
         <ModalTitle>state</ModalTitle>
         <ModalSelect
           ref={stateSelectRef}
-          defaultValue={targetIssue ? targetIssue.state : IssueStateEnum.todo}
+          defaultValue={targetIssue ? targetIssue.state : clickedState}
         >
           {Object.keys(IssueStateEnum).map((state) => (
             <option key={state}>{state}</option>

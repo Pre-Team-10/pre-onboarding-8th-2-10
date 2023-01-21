@@ -1,6 +1,8 @@
 import MANAGERS from "../constants/managers";
 import { InterfaceIssueLists, IssueStateEnum } from "./types";
 
+const dateTimeLocalRegex = /^(\d{4,})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})?$/;
+
 export const filterUnverifiedAndDuplicatedIssues = (
   issueLists: InterfaceIssueLists,
 ) => {
@@ -22,7 +24,8 @@ export const filterUnverifiedAndDuplicatedIssues = (
           !("manager" in issue) ||
           !Object.values(MANAGERS).includes(issue.manager) ||
           !Object.values(IssueStateEnum).includes(issue.state) ||
-          typeof issue.id !== "number"
+          typeof issue.id !== "number" ||
+          !dateTimeLocalRegex.test(issue.dueDate)
         ) {
           issueArray.splice(index, 1);
         }

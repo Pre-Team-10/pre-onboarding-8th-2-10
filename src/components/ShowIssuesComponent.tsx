@@ -19,7 +19,11 @@ let targetIssue: InterfaceIssue | undefined;
 
 function ShowIssuesComponent() {
   const dispatch = useDispatch();
-  const { isModalOpened, toggleModal } = useAddIssueModal();
+  const {
+    targetIssue: clickedState,
+    isModalOpened,
+    toggleModal,
+  } = useAddIssueModal();
   const issues = useSelector(
     ({ kanban }: { kanban: InterfaceIssueLists }) => kanban,
   );
@@ -59,7 +63,7 @@ function ShowIssuesComponent() {
                 issueState={state}
                 issueArray={issues[state]}
                 pickTargetIssue={pickTargetIssue}
-                toggleModal={toggleModal}
+                toggleModal={() => toggleModal(state)}
               />
             );
           })
@@ -71,6 +75,7 @@ function ShowIssuesComponent() {
         <ModalBackground onClick={hideModal}>
           <ModalComponent>
             <SaveIssuesComponent
+              clickedState={clickedState}
               targetIssue={targetIssue}
               hideModal={hideModal}
             />
