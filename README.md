@@ -318,7 +318,26 @@ useEffect(() => {
 - [x] isDebounced 상태가 false일 때만, 각 기능들이 작동하도록 구현했습니다.
 - [x] isDebounced 상태가 true로 변화하면 setTimeout을 사용해 0.5에 다시 기능이 동작할 수 있도록 setTimeout을 설정하였습니다.
 
-### 4. 모달 팝업 컴포넌트
+### 4. 담당자 목록 생성
+
+```ts
+const [searchedManagers, setSearchedManagers] = useState<string[]>([]);
+  const handleOnManagerInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const inputValue = e.currentTarget.value;
+    const searchedArray = Object.keys(MANAGERS).filter((name) => {
+      if (!inputValue) return false;
+      return name.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase());
+    });
+    setSearchedManagers(searchedArray);
+  };
+```
+
+- [x] input 이벤트 발생 시 마다 입력값을 포함하는 매니저 이름을 필터링하여 searchedManagers 상태에 저장되게 하였습니다.
+- [x] toLocaleLowerCase 함수를 사용하여 대소문자 구분 없이 이름을 검색할 수 있도록 사용자 환경을 고려하였습니다.
+
+### 5. 모달 팝업 컴포넌트
 
 ```ts
 <ModalBackground onClick={hideModal}>
