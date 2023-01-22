@@ -19,3 +19,11 @@ export enum IssueStateEnum {
   doing = "doing",
   done = "done",
 }
+
+export interface IDraggedIssue {
+  startFrom: IssueStateEnum;
+  startIssueId: number;
+  endTo?: IssueStateEnum;
+  endIssueId?: number;
+  isUpperThanTargetIssue: boolean;
+}
