@@ -46,7 +46,6 @@ function IssueBoardComponent({
         <IssueComponent
           key={issue.id}
           issue={issue}
-          isFirstIndex={index === 0}
           handleOnDeleteButtonClick={handleOnDeleteButtonClick}
           handleOnModifyButtonClick={handleOnModifyButtonClick}
         />

@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 import styled from "styled-components";
 
 export const MainTitle = styled.h2`
@@ -46,11 +47,25 @@ export const KanbanHeader = styled.header`
 `;
 
 export const KanbanBlock = styled.div`
-  margin-top: 10px;
-  padding: 5px;
+  margin: 12px 0;
   background-color: #ffffff;
   box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.06);
   border-radius: 15px;
+  overflow: hidden;
+`;
+
+export const KanbanInner = styled.div<{
+  isMouseOver?: boolean;
+  isUpperIssue?: boolean;
+}>`
+  height: 50%;
+  padding: 5px;
+  background: ${({ isMouseOver, isUpperIssue }) =>
+    isMouseOver
+      ? `linear-gradient(to ${
+          isUpperIssue ? "top" : "bottom"
+        }, transparent, pink)`
+      : "transparent"};
 `;
 
 export const KanbanTitle = styled.h1`

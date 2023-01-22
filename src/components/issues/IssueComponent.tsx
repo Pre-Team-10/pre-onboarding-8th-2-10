@@ -7,53 +7,60 @@ import {
   KanbanManagerWrapper,
   KanbanBlockFooter,
   KanbanModifyButton,
+  KanbanInner,
 } from "../../styles/styles";
 import { InterfaceIssue } from "../../utils/types";
+
+let isUpperIssue = false;
 
 function IssueComponent({
   issue,
   handleOnDeleteButtonClick,
   handleOnModifyButtonClick,
-  isFirstIndex,
 }: {
   issue: InterfaceIssue;
   handleOnDeleteButtonClick: (id?: number) => void;
   handleOnModifyButtonClick: (id?: number) => void;
-  isFirstIndex: boolean;
 }) {
   const { setDraggedStart, setDraggedOverId } = useIssueDrag();
   const [isDraggedEnter, setIsDraggedEnter] = useState(false);
   const { id, title, content, dueDate, manager, state } = issue;
   const handleOnDragStart = () => id && setDraggedStart(state, id);
-  const handleOnDragOver = () => {
-    if (id) setDraggedOverId(id);
+  const handleOnDragEnter = (isUpperThanTargetIssue: boolean) => {
+    if (id) setDraggedOverId(id, isUpperThanTargetIssue);
     setIsDraggedEnter(true);
+    isUpperIssue = isUpperThanTargetIssue;
   };
-  const handleOnDragLeave = () => setIsDraggedEnter(false);
+  const handleOnDragExitCapture = () => setIsDraggedEnter(false);
   useEffect(() => {
     if (isDraggedEnter) {
       setTimeout(() => {
-        handleOnDragLeave();
+        handleOnDragExitCapture();
+        isUpperIssue = false;
       }, 800);
     }
   }, [isDraggedEnter]);
   return (
-    <div>
-      {isFirstIndex && (
-        <div
-          onDragEnter={handleOnDragOver}
-          onDragLeaveCapture={handleOnDragLeave}
-        >
-          {isDraggedEnter ? "+" : "-"}
-        </div>
-      )}
-      <KanbanBlock draggable onDragEndCapture={handleOnDragStart}>
+    <KanbanBlock draggable onDragStart={handleOnDragStart}>
+      <KanbanInner
+        onDragEnter={() => handleOnDragEnter(true)}
+        onDragExitCapture={handleOnDragExitCapture}
+        isMouseOver={isUpperIssue && isDraggedEnter}
+        isUpperIssue={isUpperIssue}
+      >
         <KanbanTitle>
           {title.length < 25 ? title : `${title.slice(0, 25)}...`}
         </KanbanTitle>
         <KanbanContent>
           {content.length < 30 ? content : `${content.slice(0, 30)}...`}
         </KanbanContent>
+      </KanbanInner>
+      <KanbanInner
+        onDragEnter={() => handleOnDragEnter(false)}
+        onDragExitCapture={handleOnDragExitCapture}
+        isMouseOver={!isUpperIssue && isDraggedEnter}
+        isUpperIssue={isUpperIssue}
+      >
         <KanbanManagerWrapper>
           {manager} {dueDate}
         </KanbanManagerWrapper>
@@ -71,14 +78,8 @@ function IssueComponent({
             delete
           </KanbanModifyButton>
         </KanbanBlockFooter>
-      </KanbanBlock>
-      <div
-        onDragEnter={handleOnDragOver}
-        onDragLeaveCapture={handleOnDragLeave}
-      >
-        {isDraggedEnter ? "+" : "-"}
-      </div>
-    </div>
+      </KanbanInner>
+    </KanbanBlock>
   );
 }
 
