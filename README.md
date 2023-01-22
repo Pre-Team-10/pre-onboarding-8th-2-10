@@ -90,10 +90,10 @@ npm start
 
 <br>
 
-- [ ] 이슈 목록에서 마우스의 Drag & Drop 이벤트 생성
+- [x] 이슈 목록에서 마우스의 Drag & Drop 이벤트 생성
 
-  - [ ] 이슈 목록에서 마우스의 Drag & Drop 이벤트를 활용해 이슈의 순서를 변경할 수 있다.
-  - [ ] 변경된 순서는 고유번호순 정렬보다 우선해서 적용된다.
+  - [x] 이슈 목록에서 마우스의 Drag & Drop 이벤트를 활용해 이슈의 순서를 변경할 수 있다.
+  - [x] 변경된 순서는 고유번호순 정렬보다 우선해서 적용된다.
 
 <br>
 
@@ -110,7 +110,7 @@ npm start
 
 ```tsx
 src
- ┣ app
+ ┣ redux
  ┃ ┣ kanbanSlice.ts
  ┃ ┗ store.ts
  ┣ components
@@ -138,7 +138,7 @@ src
  ┗ index.tsx
 ```
 
-### app 폴더
+### redux 폴더
 
 1. Redux 상태관리 (CRUD 기능 reducers함수 생성)
 
@@ -167,7 +167,8 @@ src
 ### 1. 이슈 CRUD
 
 ```ts
-// 이슈 목록을 불러오는 함수
+// 로컬 스토리지에 저장된 이슈 목록을 불러오는 함수
+
 export const getIssuesInLocalStorage = () => {
   return new Promise<InterfaceIssueLists | null>(
     (fetchIssuesSuccess, fetchIssuesfail) => {
@@ -193,26 +194,61 @@ export const getIssuesInLocalStorage = () => {
 - [x] try...catch 문 사용해 에러 상황을 처리하도록 했습니다.
 - [x] 직관적인 함수명으로 함수의 역할을 명확하고 상세하게 알 수 있도록 했습니다.
 
-### 2. 0.5초 딜레이 함수
+### 2. 드래그 앤 드랍
 
 ```ts
-export const duplicatePrevent = () => {
-  let isClicked = false;
-  return (callback: () => void) => {
-    if (isClicked) return;
-    isClicked = true;
-    callback();
-    setTimeout(() => {
-      isClicked = false;
-    }, 500);
-  };
+// 커스텀 훅 패턴을 활용해 드래그 앤 드랍 정보를 reducer에 전달하는 함수.
+
+const useIssueDrag = () => {
+  const dispatch = useDispatch();
+  const setDraggedStart = useCallback(
+    (startFrom: IssueStateEnum, startIssueId: number) => {
+      draggedIssue.startFrom = startFrom;
+      draggedIssue.startIssueId = startIssueId;
+    },
+    [],
+  );
+  const setDraggedOverId = useCallback(
+    (endIssueId: number, isUpperThanTargetIssue: boolean) => {
+      draggedIssue.endIssueId = endIssueId;
+      draggedIssue.isUpperThanTargetIssue = isUpperThanTargetIssue;
+    },
+    [],
+  );
+  const setDraggedEnd = useCallback(
+    (endTo: IssueStateEnum) => {
+      draggedIssue.endTo = endTo;
+      if (!draggedIssue.endTo) return;
+      dispatch(arrangeDroppedIssue(draggedIssue));
+    },
+    [dispatch],
+  );
+  return { draggedIssue, setDraggedStart, setDraggedOverId, setDraggedEnd };
 };
 ```
 
-- [x] utils 파일로 분리하여 여러 개의 함수에 재사용성 높였습니다.
-- [x] callback과 setTimeout을 사용해 0.5초 딜레이를 체크합니다.
+- [x] 각 이슈 목록에 이벤트리스너를 통해 커스텀 훅 함수를 부착하여 드래그, 드랍 이벤트가 발생할 때마다 이동 위치에 대한 정보를 저장합니다.
+- [x] 이슈 요소를 드랍하여 모든 이벤트가 종료되면 해당 이동 정보를 reducer로 dispatch 하여 이동 사항을 UI에 반영합니다.
 
-### 3. 모달 팝업 컴포넌트
+### 3. 0.5초 딜레이 함수
+
+```ts
+// 기능이 동작한 후, isDebounced 상태가 true로 변화되게 하고 useEffect를 사용해 0.5 초 후에 다시 false로 변화시킵니다.
+
+useEffect(() => {
+  if (isDebounced) {
+    debounceTimeout = setTimeout(() => {
+      setIsDebounced(false);
+    }, 500);
+  }
+  return () => clearTimeout(debounceTimeout);
+}, [isDebounced]);
+```
+
+- [x] isDebounced 상태가 false일 때만, 각 기능들이 작동하도록 구현했습니다.
+- [x] isDebounced 상태가 true로 변화하면 setTimeout을 사용해 0.5에 다시 기능이 동작할 수 있도록 setTimeout을 설정하였습니다.
+
+### 4. 모달 팝업 컴포넌트
 
 ```ts
 function ModalComponent({
