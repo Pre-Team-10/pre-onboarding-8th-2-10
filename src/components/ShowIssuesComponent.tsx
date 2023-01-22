@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -16,6 +15,7 @@ import ModalComponent from "./modal/ModalComponent";
 import SaveIssuesComponent from "./SaveIssuesComponent";
 
 let targetIssue: InterfaceIssue | undefined;
+let debounceTimeout: NodeJS.Timeout;
 
 function ShowIssuesComponent() {
   const dispatch = useDispatch();
@@ -28,6 +28,7 @@ function ShowIssuesComponent() {
     ({ kanban }: { kanban: InterfaceIssueLists }) => kanban,
   );
   const [isFetchingIssues, setIsFetchingIssues] = useState(true);
+  const [isDebounced, setIsDebounced] = useState(false);
   const pickTargetIssue = useCallback(
     (issue: InterfaceIssue) => {
       if (issue.id) targetIssue = issue;
@@ -40,15 +41,26 @@ function ShowIssuesComponent() {
     toggleModal();
   };
   useEffect(() => {
-    (async () => {
-      try {
-        const fetchedIssueLists = await getIssuesInLocalStorage();
-        if (fetchedIssueLists) dispatch(defineIssueLists(fetchedIssueLists));
-      } catch (e) {
-        const error = e as Error;
-        toast.error(error.message);
-      }
-      setIsFetchingIssues(false);
+    if (isDebounced) {
+      debounceTimeout = setTimeout(() => {
+        setIsDebounced(false);
+      }, 500);
+    }
+    return () => clearTimeout(debounceTimeout);
+  }, [isDebounced]);
+  useEffect(() => {
+    (() => {
+      getIssuesInLocalStorage()
+        .then((fetchedIssueLists) => {
+          if (fetchedIssueLists) dispatch(defineIssueLists(fetchedIssueLists));
+        })
+        .then(() => {
+          setIsFetchingIssues(false);
+        })
+        .catch((e) => {
+          const error = e as Error;
+          toast.error(error.message);
+        });
     })();
   }, [dispatch]);
   return (
@@ -62,8 +74,10 @@ function ShowIssuesComponent() {
                 key={issueState}
                 issueState={state}
                 issueArray={issues[state]}
+                isDebounced={isDebounced}
                 pickTargetIssue={pickTargetIssue}
                 toggleModal={() => toggleModal(state)}
+                setIsDebounced={setIsDebounced}
               />
             );
           })

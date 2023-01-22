@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { deleteIssue } from "../../redux/kanbanSlice";
 import useIssueDrag from "../../hooks/useIssueDrag";
@@ -9,36 +9,43 @@ import IssueComponent from "./IssueComponent";
 function IssueBoardComponent({
   issueArray,
   issueState,
+  isDebounced,
   pickTargetIssue,
   toggleModal,
+  setIsDebounced,
 }: {
   issueArray: Array<InterfaceIssue>;
   issueState: IssueStateEnum;
+  isDebounced: boolean;
   pickTargetIssue: (targetIssue: InterfaceIssue) => void;
   toggleModal: (issueState: string) => void;
+  setIsDebounced: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const dispatch = useDispatch();
   const { setDraggedEnd } = useIssueDrag();
-  // const [isDebounced, setIsDebounced] = useState(false);
-  const handleOnDeleteButtonClick = useCallback(
-    (id?: number) => {
-      if (id !== undefined)
-        dispatch(deleteIssue({ targetId: id, targetState: issueState }));
-    },
-    [dispatch, issueState],
-  );
-  const handleOnModifyButtonClick = useCallback(
-    (id?: number) => {
-      if (id !== undefined) {
-        const targetIssue = issueArray.find((issue) => issue.id === id);
-        if (targetIssue) pickTargetIssue(targetIssue);
+  const handleOnDeleteButtonClick = (id?: number) => {
+    if (!isDebounced && id !== undefined) {
+      dispatch(deleteIssue({ targetId: id, targetState: issueState }));
+      setIsDebounced(true);
+    }
+  };
+  const handleOnModifyButtonClick = (id?: number) => {
+    if (!isDebounced && id !== undefined) {
+      const targetIssue = issueArray.find((issue) => issue.id === id);
+      if (targetIssue) {
+        pickTargetIssue(targetIssue);
+        setIsDebounced(true);
       }
-    },
-    [pickTargetIssue, issueArray],
-  );
+    }
+  };
   const handleOnDragOver = (e: React.MouseEvent<HTMLDivElement>) =>
     e.preventDefault();
-  const handleOnIssueDrop = () => setDraggedEnd(issueState);
+  const handleOnIssueDrop = () => {
+    if (!isDebounced) {
+      setDraggedEnd(issueState);
+      setIsDebounced(true);
+    }
+  };
   return (
     <IssueBoard onDragOver={handleOnDragOver} onDrop={handleOnIssueDrop}>
       <KanbanHeader>{issueState}</KanbanHeader>
