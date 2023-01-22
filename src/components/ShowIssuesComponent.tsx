@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { defineIssueLists } from "../app/kanbanSlice";
+import { defineIssueLists } from "../redux/kanbanSlice";
 import useAddIssueModal from "../hooks/useAddIssueModal";
 import { IssueKanban, ModalBackground } from "../styles/styles";
 import { getIssuesInLocalStorage } from "../utils/storage";

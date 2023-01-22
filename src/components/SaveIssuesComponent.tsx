@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { addIssue, modifyIssue } from "../app/kanbanSlice";
+import { addIssue, modifyIssue } from "../redux/kanbanSlice";
 import MANAGERS from "../constants/managers";
 import {
   InputBlock,

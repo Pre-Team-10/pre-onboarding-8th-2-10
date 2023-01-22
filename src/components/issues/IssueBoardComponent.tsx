@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { deleteIssue } from "../../app/kanbanSlice";
+import { deleteIssue } from "../../redux/kanbanSlice";
 import useIssueDrag from "../../hooks/useIssueDrag";
 import { IssueBoard, KanbanHeader, IssueAddButton } from "../../styles/styles";
 import { InterfaceIssue, IssueStateEnum } from "../../utils/types";
@@ -42,7 +42,7 @@ function IssueBoardComponent({
   return (
     <IssueBoard onDragOver={handleOnDragOver} onDrop={handleOnIssueDrop}>
       <KanbanHeader>{issueState}</KanbanHeader>
-      {issueArray.map((issue, index) => (
+      {issueArray.map((issue) => (
         <IssueComponent
           key={issue.id}
           issue={issue}

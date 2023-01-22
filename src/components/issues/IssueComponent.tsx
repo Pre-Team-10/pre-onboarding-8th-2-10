@@ -22,7 +22,7 @@ function IssueComponent({
   handleOnDeleteButtonClick: (id?: number) => void;
   handleOnModifyButtonClick: (id?: number) => void;
 }) {
-  const { setDraggedStart, setDraggedOverId } = useIssueDrag();
+  const { draggedIssue, setDraggedStart, setDraggedOverId } = useIssueDrag();
   const [isDraggedEnter, setIsDraggedEnter] = useState(false);
   const { id, title, content, dueDate, manager, state } = issue;
   const handleOnDragStart = () => id && setDraggedStart(state, id);
@@ -45,7 +45,9 @@ function IssueComponent({
       <KanbanInner
         onDragEnter={() => handleOnDragEnter(true)}
         onDragExitCapture={handleOnDragExitCapture}
-        isMouseOver={isUpperIssue && isDraggedEnter}
+        isMouseOver={
+          id !== draggedIssue.startIssueId && isUpperIssue && isDraggedEnter
+        }
         isUpperIssue={isUpperIssue}
       >
         <KanbanTitle>
@@ -58,7 +60,9 @@ function IssueComponent({
       <KanbanInner
         onDragEnter={() => handleOnDragEnter(false)}
         onDragExitCapture={handleOnDragExitCapture}
-        isMouseOver={!isUpperIssue && isDraggedEnter}
+        isMouseOver={
+          id !== draggedIssue.startIssueId && !isUpperIssue && isDraggedEnter
+        }
         isUpperIssue={isUpperIssue}
       >
         <KanbanManagerWrapper>

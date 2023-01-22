@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import EMPTY_KANBAN_ISSUE_LISTS from "../constants/kanban";
 import { saveUpdatedIssuesInLocalStorage } from "../utils/storage";
 import {
+  IDraggedIssue,
   InterfaceIssue,
   InterfaceIssueLists,
   IssueStateEnum,
@@ -63,10 +64,38 @@ export const counterSlice = createSlice({
       kanbans.done = fetchedIssueLists.done;
       maxIssueId = getIssuesMaxId(fetchedIssueLists);
     },
+    arrangeDroppedIssue: (
+      kanbans,
+      { payload: dragInfo }: { payload: IDraggedIssue },
+    ) => {
+      if (dragInfo.endIssueId && dragInfo.endTo) {
+        const targetStartIssueIndex = kanbans[dragInfo.startFrom].findIndex(
+          (issue) => issue.id === dragInfo.startIssueId,
+        );
+        const targetIssue = kanbans[dragInfo.startFrom][targetStartIssueIndex];
+        targetIssue.state = dragInfo.endTo;
+        kanbans[dragInfo.startFrom].splice(targetStartIssueIndex, 1);
+        if (dragInfo.startIssueId === dragInfo.endIssueId) {
+          kanbans[dragInfo.endTo].push(targetIssue);
+        } else {
+          const targetEndIssueIndex =
+            kanbans[dragInfo.endTo].findIndex(
+              (issue) => issue.id === dragInfo.endIssueId,
+            ) + (dragInfo.isUpperThanTargetIssue ? 0 : 1);
+          kanbans[dragInfo.endTo].splice(targetEndIssueIndex, 0, targetIssue);
+        }
+      }
+      saveUpdatedIssuesInLocalStorage(kanbans);
+    },
   },
 });
 
-export const { addIssue, deleteIssue, modifyIssue, defineIssueLists } =
-  counterSlice.actions;
+export const {
+  addIssue,
+  deleteIssue,
+  modifyIssue,
+  defineIssueLists,
+  arrangeDroppedIssue,
+} = counterSlice.actions;
 
 export default counterSlice.reducer;

@@ -1,14 +1,7 @@
-import { useEffect } from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { IssueStateEnum } from "../utils/types";
-
-interface IDraggedIssue {
-  startFrom: IssueStateEnum;
-  startIssueId: number;
-  endTo?: IssueStateEnum;
-  endIssueId?: number;
-  isUpperThanTargetIssue: boolean;
-}
+import { arrangeDroppedIssue } from "../redux/kanbanSlice";
+import { IDraggedIssue, IssueStateEnum } from "../utils/types";
 
 const draggedIssue: IDraggedIssue = {
   startFrom: IssueStateEnum.todo,
@@ -18,23 +11,28 @@ const draggedIssue: IDraggedIssue = {
 
 const useIssueDrag = () => {
   const dispatch = useDispatch();
-  const setDraggedStart = (startFrom: IssueStateEnum, startIssueId: number) => {
-    draggedIssue.startFrom = startFrom;
-    draggedIssue.startIssueId = startIssueId;
-  };
-  const setDraggedOverId = (
-    endIssueId: number,
-    isUpperThanTargetIssue: boolean,
-  ) => {
-    draggedIssue.endIssueId = endIssueId;
-    draggedIssue.isUpperThanTargetIssue = isUpperThanTargetIssue;
-  };
-  const setDraggedEnd = (endTo: IssueStateEnum) => {
-    draggedIssue.endTo = endTo;
-    if (!draggedIssue.endIssueId || !draggedIssue.endTo) return;
-    if (draggedIssue.startIssueId === draggedIssue.endIssueId) return;
-    console.log(draggedIssue);
-  };
+  const setDraggedStart = useCallback(
+    (startFrom: IssueStateEnum, startIssueId: number) => {
+      draggedIssue.startFrom = startFrom;
+      draggedIssue.startIssueId = startIssueId;
+    },
+    [],
+  );
+  const setDraggedOverId = useCallback(
+    (endIssueId: number, isUpperThanTargetIssue: boolean) => {
+      draggedIssue.endIssueId = endIssueId;
+      draggedIssue.isUpperThanTargetIssue = isUpperThanTargetIssue;
+    },
+    [],
+  );
+  const setDraggedEnd = useCallback(
+    (endTo: IssueStateEnum) => {
+      draggedIssue.endTo = endTo;
+      if (!draggedIssue.endTo) return;
+      dispatch(arrangeDroppedIssue(draggedIssue));
+    },
+    [dispatch],
+  );
   return { draggedIssue, setDraggedStart, setDraggedOverId, setDraggedEnd };
 };
 
